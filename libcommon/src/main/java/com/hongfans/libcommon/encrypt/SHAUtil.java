@@ -1,4 +1,4 @@
-package com.hongfans.libcommon.util.encrypt;
+package com.hongfans.libcommon.encrypt;
 
 import java.security.MessageDigest;
 

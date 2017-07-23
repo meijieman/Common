@@ -9,6 +9,10 @@ import android.util.Log;
  */
 public class LogUtil{
 
+    private static final int LEVEL_V = 0;
+    private static final int LEVEL_I = 1;
+    private static final int LEVEL_W = 2;
+    private static final int LEVEL_E = 3;
     private static String mTag = "LogUtil";
     private static boolean mIsDebug;
     private static boolean mIsTrack;
@@ -26,43 +30,18 @@ public class LogUtil{
     }
 
     public static void e(String msg){
-        if(mIsDebug){
-            if(mIsTrack){
-                getTrace();
-            } else {
-
-            }
-        }
+        e("", msg);
     }
 
     public static void e(String tag, String msg){
         if(mIsDebug){
+            String trace = "";
             if(mIsTrack){
-                getTrace();
-            } else {
-
+                trace = getTrace();
             }
+            log(tag, trace + msg, LEVEL_E);
         }
     }
-
-    /**
-     * @param tag * @param
-     */
-    /**
-     * @param tag     设置的 tag
-     * @param isTrack 根据当前的设置判断是否栈追踪
-     * @param msg     需要打印的内容
-     */
-    public static void e(String tag, boolean isTrack, String msg){
-        if(mIsDebug){
-            if(isTrack){
-
-            } else {
-
-            }
-        }
-    }
-
 
     private static String getTrace(){
         StackTraceElement[] elements = Thread.currentThread().getStackTrace();
@@ -75,5 +54,22 @@ public class LogUtil{
 
         return null;
 
+    }
+
+    private static void log(String tag, String msg, int level){
+        switch(level) {
+            case LEVEL_V:
+                Log.v(mTag + tag, msg);
+                break;
+            case LEVEL_I:
+                Log.i(mTag + tag, msg);
+                break;
+            case LEVEL_W:
+                Log.w(mTag + tag, msg);
+                break;
+            case LEVEL_E:
+                Log.e(mTag + tag, msg);
+                break;
+        }
     }
 }

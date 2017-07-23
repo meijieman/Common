@@ -1,4 +1,4 @@
-package com.hongfans.libcommon.util.encrypt.aes;
+package com.hongfans.libcommon.encrypt.aes;
 
 import java.io.UnsupportedEncodingException;
 

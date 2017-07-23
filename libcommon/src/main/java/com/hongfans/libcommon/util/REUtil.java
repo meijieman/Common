@@ -491,4 +491,114 @@ public class REUtil{
         }
         return null;
     }
+
+    /**
+     * 描述：是否是中文.
+     *
+     * @param str 指定的字符串
+     * @return 是否是中文:是为true，否则false
+     */
+    public static boolean isChinese(String str){
+        Boolean isChinese = true;
+        String chinese = "[\u0391-\uFFE5]";
+        if(!StringUtil.isEmpty(str)){
+            // 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1
+            for(int i = 0; i < str.length(); i++){
+                // 获取一个字符
+                String temp = str.substring(i, i + 1);
+                // 判断是否为中文字符
+                if(temp.matches(chinese)){
+                } else {
+                    isChinese = false;
+                }
+            }
+        }
+        return isChinese;
+    }
+
+    /**
+     * 描述：是否包含中文.
+     *
+     * @param str 指定的字符串
+     * @return 是否包含中文:是为true，否则false
+     */
+    public static Boolean isContainChinese(String str){
+        Boolean isChinese = false;
+        String chinese = "[\u0391-\uFFE5]";
+        if(!StringUtil.isEmpty(str)){
+            // 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1
+            for(int i = 0; i < str.length(); i++){
+                // 获取一个字符
+                String temp = str.substring(i, i + 1);
+                // 判断是否为中文字符
+                if(temp.matches(chinese)){
+                    isChinese = true;
+                } else {
+
+                }
+            }
+        }
+        return isChinese;
+    }
+
+    /**
+     * 座机正则匹配
+     */
+    public static boolean isLandLineNo(String str){
+        Boolean isMobileNo = false;
+        try{
+            Pattern p = Pattern.compile("^(0[0-9]{2,3})?([2-9][0-9]{6,7})+([0-9]{1,4})?$");
+            Matcher m = p.matcher(str);
+            isMobileNo = m.matches();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return isMobileNo;
+    }
+
+    /**
+     * 手机号格式验证.
+     */
+    public static Boolean isMobileNo(String str){
+        Boolean isMobileNo = false;
+        try{
+            Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(17[0,5-9])|(18[0,5-9]))\\d{8}$");
+            Matcher m = p.matcher(str);
+            isMobileNo = m.matches();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return isMobileNo;
+    }
+
+    /**
+     * 是否为数字
+     */
+    public static boolean isDigit(String digitString){
+        if(!StringUtil.isEmpty(digitString)){
+            String regex = "[0-9]*";
+            return isMatch(regex, digitString);
+        }
+        return false;
+    }
+
+    /**
+     * 字符串正则校验
+     */
+    public static boolean isMatch(String regex, String string){
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(string);
+        return matcher.matches();
+    }
+
+    /**
+     * 是否为URL地址
+     */
+    public static boolean isUrl(String strIp){
+        String strPattern = "^((https?)|(ftp))://(?:(\\s+?)(?::(\\s+?))?@)?([a-zA-Z0-9\\-.]+)"
+                            + "(?::(\\d+))?((?:/[a-zA-Z0-9\\-._?,'+\\&%$=~*!():@\\\\]*)+)?$";
+        return isMatch(strPattern, strIp);
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.hongfans.libcommon.constant;
+package com.hongfans.libcommon.resource;
 
 /**
  * 图片 url
