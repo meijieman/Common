@@ -13,9 +13,27 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
 
-        LogUtil.init("TAG", true, true);
+        LogUtil.init("elegant_", true, false);
 
+        method1();
+
+    }
+
+    private void method1(){
+        method2();
+    }
+
+    private void method2(){
+
+        LogUtil.v("hello");
+        LogUtil.d("hello");
+        LogUtil.i("hello");
+        LogUtil.w("hello");
         LogUtil.e("hello");
 
+        LogUtil.print("print", "print this log");
+
+        LogUtil.saveLog("保存的日志第一行");
+        LogUtil.saveLog("保存的日志第二行");
     }
 }

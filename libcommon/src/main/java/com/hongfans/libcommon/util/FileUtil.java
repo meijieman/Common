@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -625,12 +626,12 @@ public class FileUtil{
                 pw.println(msg);
                 return true;
             } catch(IOException e){
-                //                Log.e(TAG, "saveFile: 发生异常");
+                Log.e("FileUtil", "saveFile: 发生异常");
                 e.printStackTrace();
                 return false;
             }
         } else {
-            //            Log.e(TAG, "saveFile: 没有内存卡");
+            Log.e("FileUtil", "saveFile: 没有内存卡");
             return false;
         }
     }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 
-import com.hongfans.libcommon.AppContext;
+import com.hongfans.libcommon.BaseApp;
 
 
 /**
@@ -24,7 +24,7 @@ public class UIUtils{
 
     /** 得到上下文 */
     public static Context getContext(){
-        return AppContext.getInstance();
+        return BaseApp.getInstance();
     }
 
     /** 得到 string.xml 中的一个字符串数组 */
@@ -57,11 +57,11 @@ public class UIUtils{
 
     /** 得到主线程id */
     public static long getMainThreadId(){
-        return AppContext.getMainThreadId();
+        return BaseApp.getMainThreadId();
     }
 
     /** 得到一个主线程的handler */
     public static Handler getMainThreadHandler(){
-        return AppContext.getHandler();
+        return BaseApp.getHandler();
     }
 }

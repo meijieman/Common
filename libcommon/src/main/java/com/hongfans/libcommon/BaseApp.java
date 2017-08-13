@@ -7,9 +7,9 @@ import android.os.Handler;
 /**
  *
  */
-public class AppContext extends Application{
+public class BaseApp extends Application{
 
-    private static AppContext sInstance;
+    private static BaseApp sInstance;
     private static long sMainThreadId;
     private static Handler sHandler = new Handler();
 
