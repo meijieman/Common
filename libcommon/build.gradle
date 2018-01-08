@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -34,4 +38,15 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
 
     compile 'com.google.code.gson:gson:2.6.2'
+}
+
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+    userOrg = 'super-major' // bintray.com用户名
+    groupId = 'com.hongfans' // jcenter 上的路径，应为域名反转 com.hongfans
+    artifactId = 'common' // 项目名称
+    publishVersion = '1.0.0' // 版本号
+    desc = '常用工具类' // 描述
+    website = 'https://github.com/meijieman/common' // 网站
 }
