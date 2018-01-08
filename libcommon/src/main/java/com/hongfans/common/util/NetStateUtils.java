@@ -163,11 +163,11 @@ public class NetStateUtils {
             if (telephonyManager != null) {
                 String IMSI = telephonyManager.getSubscriberId();
                 LogUtil.i("imsi " + IMSI);
-                if (StringUtils.isEmpty(IMSI) || IMSI.length() < 5) {
+                if (StringUtil.isEmpty(IMSI) || IMSI.length() < 5) {
                     if (TelephonyManager.SIM_STATE_READY == telephonyManager
                             .getSimState()) {
                         String operator = telephonyManager.getSimOperator();
-                        if (StringUtils.isNotEmpty(operator) && operator.length() >= 5) {
+                        if (StringUtil.isNotEmpty(operator) && operator.length() >= 5) {
                             return operator.substring(0, 5);
                         }
                     }

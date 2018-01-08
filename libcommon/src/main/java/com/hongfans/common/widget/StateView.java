@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hongfans.common.R;
-import com.hongfans.common.base.CommonConfig;
+import com.hongfans.common.CommonConfig;
 import com.hongfans.common.util.DensityUtil;
 
 /**

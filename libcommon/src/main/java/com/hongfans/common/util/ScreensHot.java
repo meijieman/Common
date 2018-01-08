@@ -7,9 +7,6 @@ import android.view.View;
 
 import java.io.ByteArrayOutputStream;
 
-/**
- * Created by 刘亚星 on 2017/5/4.
- */
 public class ScreensHot {
 
     public static String viewScreensHot(View view) {

@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
-import com.hongfans.common.base.CommonConfig;
+import com.hongfans.common.CommonConfig;
 
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -79,7 +79,7 @@ public class NetworkUtils {
      * @return {@code true}: 可用<br>{@code false}: 不可用
      */
     public static boolean isAvailableByPing() {
-        ShellUtils.CommandResult result = ShellUtils.execCmd("ping -c 1 -w 1 223.5.5.5", false);
+        ShellUtil.CommandResult result = ShellUtil.execCmd("ping -c 1 -w 1 223.5.5.5", false);
         boolean ret = result.result == 0;
         if (result.errorMsg != null) {
 //            Logger.d("isAvailableByPing errorMsg", result.errorMsg);

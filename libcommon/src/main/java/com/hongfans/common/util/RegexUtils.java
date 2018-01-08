@@ -235,4 +235,91 @@ public class RegexUtils {
         Matcher m = p.matcher(str);
         return m.find();
     }
+
+    public static boolean isNumeric(String str) {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        return pattern.matcher(str).matches();
+    }
+
+    /**
+     * @param str
+     * @return
+     * @描述：座机正则匹配
+     * @作者：黄涛
+     * @时间：2015-7-4 下午4:50:28
+     */
+    public static boolean isLandLineNo(String str) {
+        Boolean isMobileNo = false;
+        try {
+            Pattern p = Pattern.compile("^(0[0-9]{2,3})?([2-9][0-9]{6,7})+([0-9]{1,4})?$");
+            Matcher m = p.matcher(str);
+            isMobileNo = m.matches();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isMobileNo;
+    }
+
+    /**
+     * 描述：手机号格式验证.
+     *
+     * @param str 指定的手机号码字符串
+     * @return 是否为手机号码格式:是为true，否则false
+     */
+    public static Boolean isMobileNo(String str) {
+        Boolean isMobileNo = false;
+        try {
+            Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(17[0,5-9])|(18[0,5-9]))\\d{8}$");
+            Matcher m = p.matcher(str);
+            isMobileNo = m.matches();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isMobileNo;
+    }
+
+    /**
+     * 描述：是否只是字母和数字.
+     *
+     * @param str 指定的字符串
+     * @return 是否只是字母和数字:是为true，否则false
+     */
+    public static Boolean isNumberLetter(String str) {
+        Boolean isNoLetter = false;
+        String expr = "^[A-Za-z0-9]+$";
+        if (str.matches(expr)) {
+            isNoLetter = true;
+        }
+        return isNoLetter;
+    }
+
+    /**
+     * 描述：是否只是数字.
+     *
+     * @param str 指定的字符串
+     * @return 是否只是数字:是为true，否则false
+     */
+    public static Boolean isNumber(String str) {
+        Boolean isNumber = false;
+        String expr = "^[0-9]+$";
+        if (str.matches(expr)) {
+            isNumber = true;
+        }
+        return isNumber;
+    }
+
+    /**
+     * 描述：是否是邮箱.
+     *
+     * @param str 指定的字符串
+     * @return 是否是邮箱:是为true，否则false
+     */
+    public static Boolean isEmail(String str) {
+        Boolean isEmail = false;
+        String expr = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        if (str.matches(expr)) {
+            isEmail = true;
+        }
+        return isEmail;
+    }
 }

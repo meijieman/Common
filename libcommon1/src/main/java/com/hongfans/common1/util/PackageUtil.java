@@ -15,8 +15,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.hongfans.common1.log.LogUtil;
-
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -178,7 +176,7 @@ public class PackageUtil{
         try{
             return context.getPackageManager().getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
         } catch(PackageManager.NameNotFoundException e){
-            LogUtil.e(packageName + " NameNotFoundException");
+            e.printStackTrace();
             return null;
         }
     }

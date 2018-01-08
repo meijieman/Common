@@ -35,7 +35,7 @@ public class FileUtil {
 
     // 创建目录
     public static void createIfNotExist(String path) {
-        if (!StringUtils.isEmpty(path)) {
+        if (!StringUtil.isEmpty(path)) {
             File file = new File(path);
             if (!file.exists()) {
                 file.mkdirs();
@@ -187,7 +187,7 @@ public class FileUtil {
      */
     public static void writeProperties(String filePath, String key,
                                        String value, String comment) {
-        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(filePath)) {
+        if (StringUtil.isEmpty(key) || StringUtil.isEmpty(filePath)) {
             return;
         }
         FileInputStream fis = null;
@@ -214,7 +214,7 @@ public class FileUtil {
      * 根据值读取
      */
     public static String readProperties(String filePath, String key, String defaultValue) {
-        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(filePath)) {
+        if (StringUtil.isEmpty(key) || StringUtil.isEmpty(filePath)) {
             return null;
         }
         String value = null;
@@ -240,7 +240,7 @@ public class FileUtil {
      * 把字符串键值对的map写入文件
      */
     public static void writeMap(String filePath, Map<String, String> map, boolean append, String comment) {
-        if (map == null || map.size() == 0 || StringUtils.isEmpty(filePath)) {
+        if (map == null || map.size() == 0 || StringUtil.isEmpty(filePath)) {
             return;
         }
         FileInputStream fis = null;
@@ -269,7 +269,7 @@ public class FileUtil {
      * 把字符串键值对的文件读入map
      */
     public static Map<String, String> readMap(String filePath, String defaultValue) {
-        if (StringUtils.isEmpty(filePath)) {
+        if (StringUtil.isEmpty(filePath)) {
             return null;
         }
         Map<String, String> map = null;
@@ -435,7 +435,7 @@ public class FileUtil {
      * whether the file path is sdcard path
      */
     public static final boolean isSDCardPath(String path) {
-        if (StringUtils.isEmpty(path)) {
+        if (StringUtil.isEmpty(path)) {
             return false;
         }
         String sdRootPath = Environment.getExternalStorageDirectory().getAbsolutePath();

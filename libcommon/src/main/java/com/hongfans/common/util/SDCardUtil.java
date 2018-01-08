@@ -12,11 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * TODO
- * Created by MEI on 2017/9/8.
- */
-
 public class SDCardUtil {
 
     private static final String TAG = "SDCardUtil";

@@ -27,25 +27,16 @@ import java.util.List;
  * @时间 2016/8/20
  */
 public class CommonUtil {
+
     /**
      * is null or its size is 0
-     * <p/>
-     * <pre>
-     * isEmpty(null)   =   true;
-     * isEmpty({})     =   true;
-     * isEmpty({1})    =   false;
-     * </pre>
-     *
-     * @param <V>
-     * @param sourceList
-     * @return if list is null or its size is 0, return true, else return false.
      */
     public static <V> boolean isEmpty(List<V> sourceList) {
-        return (sourceList == null || sourceList.size() == 0);
+        return sourceList == null || sourceList.isEmpty();
     }
 
     public static boolean isEmpty(String content) {
-        return TextUtils.isEmpty(content) || "null".equals(content);
+        return TextUtils.isEmpty(content) || content.isEmpty();
     }
 
     public static String toString(Object objectValue) {

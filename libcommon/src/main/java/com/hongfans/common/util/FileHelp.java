@@ -139,7 +139,7 @@ public class FileHelp {
 
     // 创建目录
     public static void createDirIfNotExist(String path) {
-        if (!StringUtils.isEmpty(path)) {
+        if (StringUtil.isNotEmpty(path)) {
             File file = new File(path);
             if (!file.exists()) {
                 file.mkdirs();
@@ -186,7 +186,7 @@ public class FileHelp {
         return size;
     }
 
-    public static void DeleteAPKFile(File file) {
+    public static void deleteAPKFile(File file) {
         if (file.isFile()) {
             file.delete();
             return;
@@ -198,19 +198,14 @@ public class FileHelp {
             }
             for (File f : childFile) {
                 if (f.getName().contains(".apk") || f.getName().contains(".patch")) {
-                    DeleteAPKFile(f);
+                    deleteAPKFile(f);
                 }
-
             }
         }
     }
 
-
     /**
      * create parent dir by file path
-     *
-     * @param filePath file path
-     * @return true mean create parent dir succeed
      */
     public static final boolean createFileParentDir(String filePath) {
         File file = new File(filePath);
@@ -233,9 +228,6 @@ public class FileHelp {
 
     /**
      * get file suffix by file path
-     *
-     * @param filePath file path
-     * @return file suffix,return null means failed
      */
     public static String getFileSuffix(String filePath) {
         if (!TextUtils.isEmpty(filePath)) {
@@ -249,9 +241,6 @@ public class FileHelp {
 
     /**
      * whether the path is file path
-     *
-     * @param path file path
-     * @return true means the path is file path
      */
     public static boolean isFilePath(String path) {
         if (TextUtils.isEmpty(path)) {
