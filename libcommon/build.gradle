@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 100
+        versionName "1.0.0"
 
     }
     buildTypes {
@@ -42,7 +42,7 @@ dependencies {
 
 task makeJar(type: Copy) {
     //删除存在的
-    delete 'build/libs/carmeida4.3.jar'
+    delete 'build/libs/libcommon.jar'
     //设置拷贝的文件
     from('build/intermediates/bundles/default/')
     //打进jar包后的文件目录
@@ -52,7 +52,7 @@ task makeJar(type: Copy) {
     //（我们只关心classes.jar这个文件）
     include('classes.jar')
     //重命名
-    rename ('classes.jar', 'carmeida4.2.jar')
+    rename ('classes.jar', "libcommon1.0.0.jar")
 }
 
 makeJar.dependsOn(build)
