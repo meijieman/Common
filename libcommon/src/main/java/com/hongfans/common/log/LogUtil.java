@@ -1,13 +1,10 @@
 package com.hongfans.common.log;
 
-import android.support.annotation.IntDef;
 import android.util.Log;
 
 import com.hongfans.common.rx.rxtask.RxTask;
 import com.hongfans.common.util.FileUtil;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,63 +39,63 @@ public class LogUtil {
         mPkgName = pkgName;
     }
 
-    public static void v(String msg) {
+    public static void v(Object msg) {
         log(mIsDebug, mIsTrack, "", msg, LEVEL_V);
     }
 
-    public static void v(String tag, String msg) {
+    public static void v(String tag, Object msg) {
         log(mIsDebug, mIsTrack, tag, msg, LEVEL_V);
     }
 
 
-    public static void d(String msg) {
+    public static void d(Object msg) {
         log(mIsDebug, mIsTrack, "", msg, LEVEL_D);
     }
 
-    public static void d(String tag, String msg) {
+    public static void d(String tag, Object msg) {
         log(mIsDebug, mIsTrack, tag, msg, LEVEL_D);
     }
 
-    public static void i(String msg) {
+    public static void i(Object msg) {
         log(mIsDebug, mIsTrack, "", msg, LEVEL_I);
     }
 
-    public static void i(String tag, String msg) {
+    public static void i(String tag, Object msg) {
         log(mIsDebug, mIsTrack, tag, msg, LEVEL_I);
     }
 
-    public static void i(String tag, String msg, boolean isDebug) {
+    public static void i(String tag, Object msg, boolean isDebug) {
         if (isDebug) {
             log(mIsDebug, mIsTrack, tag, msg, LEVEL_I);
         }
     }
 
-    public static void w(String msg) {
+    public static void w(Object msg) {
         log(mIsDebug, mIsTrack, "", msg, LEVEL_W);
     }
 
-    public static void w(String tag, String msg) {
+    public static void w(String tag, Object msg) {
         log(mIsDebug, mIsTrack, tag, msg, LEVEL_W);
     }
 
-    public static void e(String msg) {
+    public static void e(Object msg) {
         log(mIsDebug, mIsTrack, "", msg, LEVEL_E);
     }
 
-    public static void e(String tag, String msg) {
+    public static void e(String tag, Object msg) {
         log(mIsDebug, mIsTrack, tag, msg, LEVEL_E);
     }
 
-    public static void e(boolean isTrack, String tag, String msg) {
+    public static void e(boolean isTrack, String tag, Object msg) {
         log(mIsDebug, isTrack, tag, msg, LEVEL_E);
     }
 
     // always print
-    public static void print(String tag, String msg) {
+    public static void print(String tag, Object msg) {
         log(true, mIsTrack, tag, msg, LEVEL_I);
     }
 
-    public static void saveLogAlways(final String parent, final String msg) {
+    public static void saveLogAlways(final String parent, final Object msg) {
         final String log = log(true, mIsTrack, "", msg, LEVEL_I);
         RxTask.doOnIOThread(new RxTask.IOTask() {
             @Override
@@ -109,7 +106,7 @@ public class LogUtil {
         });
     }
 
-    public static void saveLog(final String parent, final String msg) {
+    public static void saveLog(final String parent, final Object msg) {
         final String log = log(mIsDebug, mIsTrack, "", msg, LEVEL_I);
         RxTask.doOnIOThread(new RxTask.IOTask() {
             @Override
@@ -123,7 +120,7 @@ public class LogUtil {
     /**
      * 保存 log 到本地
      */
-    public static void saveLog(final String parent, final String tag, final String msg) {
+    public static void saveLog(final String parent, final String tag, final Object msg) {
         final String log = log(mIsDebug, mIsTrack, tag, msg, LEVEL_I);
         RxTask.doOnIOThread(new RxTask.IOTask() {
             @Override
@@ -134,7 +131,7 @@ public class LogUtil {
         });
     }
 
-    private static String log(boolean isDebug, boolean isTrack, String tag, String msg, @Level int level) {
+    private static String log(boolean isDebug, boolean isTrack, String tag, Object msg, int level) {
         if (isDebug) {
             StringBuilder sb = new StringBuilder();
             StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
@@ -196,8 +193,4 @@ public class LogUtil {
                 .append(")");
         return sb.toString();
     }
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({LEVEL_V, LEVEL_D, LEVEL_I, LEVEL_W, LEVEL_E})
-    private @interface Level {}
 }
