@@ -1,4 +1,4 @@
-package com.hongfans.common.base;
+package com.hongfans.common.crash;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

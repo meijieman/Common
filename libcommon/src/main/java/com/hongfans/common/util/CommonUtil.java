@@ -28,25 +28,20 @@ import java.util.List;
  */
 public class CommonUtil {
 
-    /**
-     * is null or its size is 0
-     */
-    public static <V> boolean isEmpty(List<V> sourceList) {
-        return sourceList == null || sourceList.isEmpty();
+    public static boolean isEmpty(List list) {
+        return list == null || list.isEmpty();
     }
 
-    public static boolean isEmpty(String content) {
-        return TextUtils.isEmpty(content) || content.isEmpty();
+    public static boolean isNotEmpty(List list) {
+        return !isEmpty(list);
     }
 
-    public static String toString(Object objectValue) {
-        String strValue = "";
-        try {
-            strValue = String.valueOf(objectValue);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strValue;
+    public static boolean isEmpty(String str) {
+        return TextUtils.isEmpty(str) || str.isEmpty();
+    }
+
+    public static boolean isNotEmpty(String str) {
+        return !isEmpty(str);
     }
 
     public static int toInt(String strValue) {

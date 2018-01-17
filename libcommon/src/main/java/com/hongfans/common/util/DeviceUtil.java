@@ -1,4 +1,4 @@
-package com.hongfans.common1.util;
+package com.hongfans.common.util;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;

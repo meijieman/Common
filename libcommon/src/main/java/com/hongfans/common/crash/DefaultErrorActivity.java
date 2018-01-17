@@ -1,4 +1,4 @@
-package com.hongfans.common.base;
+package com.hongfans.common.crash;
 
 import android.app.Activity;
 import android.app.AlertDialog;

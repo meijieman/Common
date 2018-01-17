@@ -1,4 +1,4 @@
-package com.hongfans.common1.util;
+package com.hongfans.common.util;
 
 import android.content.Context;
 import android.os.Looper;

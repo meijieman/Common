@@ -1,4 +1,4 @@
-package com.hongfans.common.api;
+package com.hongfans.common.api.interceptor;
 
 import com.hongfans.common.log.LogUtil;
 

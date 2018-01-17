@@ -1,5 +1,14 @@
 ## 通用库
 
+常用工具类 + 日志打印工具LogUtil + SL + crash工具 + 网络请求框架 + toast工具
+
+
+TODO:
+
+com.hongfans.common.api.ApiFactory
+
+
+
 ## libcommon
 为经常使用的工具库
 

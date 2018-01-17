@@ -13,7 +13,7 @@ public class CommonConfig {
 
     private static Application sInstance;
 
-    public static Application getContext(){
+    public static Application getContext() {
         return sInstance;
     }
 
@@ -45,7 +45,7 @@ public class CommonConfig {
         }
     }
 
-    public void destroy(){
+    public void destroy() {
         sInstance = null;
     }
 }
