@@ -23,6 +23,30 @@ public class SL {
         Log.i(TAG, sb.toString());
     }
 
+    public static void w(String msg) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        StringBuilder sb = new StringBuilder();
+        StackTraceElement element = stackTrace[3];
+        String pkgName = getPkgName(element.getClassName()); // 获取包名
+        sb.append(element.toString().replace(pkgName + ".", ""));
+        sb.append(": ");
+        sb.append(msg);
+
+        Log.w(TAG, sb.toString());
+    }
+
+    public static void e(String msg) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        StringBuilder sb = new StringBuilder();
+        StackTraceElement element = stackTrace[3];
+        String pkgName = getPkgName(element.getClassName()); // 获取包名
+        sb.append(element.toString().replace(pkgName + ".", ""));
+        sb.append(": ");
+        sb.append(msg);
+
+        Log.e(TAG, sb.toString());
+    }
+
     private static String getPkgName(String className) {
         if (className.contains("$")) {
             // 内部类
