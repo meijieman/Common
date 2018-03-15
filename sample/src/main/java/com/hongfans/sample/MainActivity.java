@@ -2,17 +2,32 @@ package com.hongfans.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.hongfans.common.log.LogUtil;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        method1();
+        findViewById(R.id.btn_1).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_1:
+
+                method1();
+
+                break;
+            default:
+
+                break;
+        }
     }
 
     private void method1() {
@@ -20,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void method2() {
+
+        LogUtil.init(getPackageName(), "tag_andy", true, true);
 
         LogUtil.v("hello");
         LogUtil.d("hello");
