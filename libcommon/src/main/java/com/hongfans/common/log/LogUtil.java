@@ -21,7 +21,7 @@ public class LogUtil {
     private static final int LEVEL_W = 4;
     private static final int LEVEL_E = 5;
 
-    private static String mTag = "tag_andy_";
+    private static String mTag = "LogUtil_";
 
     private static boolean mIsDebug;
     private static boolean mIsTrack;

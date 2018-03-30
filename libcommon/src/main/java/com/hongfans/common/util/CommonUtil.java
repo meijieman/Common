@@ -2,8 +2,10 @@ package com.hongfans.common.util;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
@@ -53,6 +55,19 @@ public class CommonUtil {
             LogUtil.e("转换 int 失败 原始 " + strValue);
         }
         return iValue;
+    }
+
+    public static String parseIntent(Intent intent) {
+        StringBuilder sb = new StringBuilder();
+        if (intent != null) {
+            sb.append("act=").append(intent.getAction()).append(", ");
+            sb.append("cat=").append(intent.getCategories()).append(", ");
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                sb.append(bundle);
+            }
+        }
+        return sb.toString();
     }
 
     private static List<Long> countList = new ArrayList<>();
