@@ -11,7 +11,12 @@ public class SL {
 
     private static final String TAG = "tag_sl";
 
-    public static void i(String msg) {
+    public static boolean sIsDebug = true;
+
+    public static void i(Object msg) {
+        if (!sIsDebug) {
+            return;
+        }
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         StringBuilder sb = new StringBuilder();
         StackTraceElement element = stackTrace[3];
@@ -23,7 +28,10 @@ public class SL {
         Log.i(TAG, sb.toString());
     }
 
-    public static void w(String msg) {
+    public static void w(Object msg) {
+        if (!sIsDebug) {
+            return;
+        }
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         StringBuilder sb = new StringBuilder();
         StackTraceElement element = stackTrace[3];
@@ -35,7 +43,10 @@ public class SL {
         Log.w(TAG, sb.toString());
     }
 
-    public static void e(String msg) {
+    public static void e(Object msg) {
+        if (!sIsDebug) {
+            return;
+        }
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         StringBuilder sb = new StringBuilder();
         StackTraceElement element = stackTrace[3];
