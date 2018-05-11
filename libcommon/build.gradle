@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 23
     buildToolsVersion "25.0.0"
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 25
-        versionCode 101
-        versionName "1.0.1"
+        targetSdkVersion 23
+        versionCode 102
+        versionName "1.0.2"
 
     }
     buildTypes {
@@ -64,7 +64,7 @@ publish {
     userOrg = 'super-major' // bintray.com用户名
     groupId = 'com.hongfans' // jcenter 上的路径，应为域名反转 com.hongfans
     artifactId = 'common' // 项目名称
-    publishVersion = '1.0.1' // 版本号
+    publishVersion = '1.0.2' // 版本号
     desc = '常用工具类' // 描述
     website = 'https://github.com/meijieman/common' // 网站
 }

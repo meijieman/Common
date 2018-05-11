@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.hongfans.common.util.CloseUtil;
+import com.hongfans.common.util.CommonUtil;
 import com.hongfans.common.util.FileHelp;
 
 import java.io.BufferedReader;
@@ -37,13 +38,18 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     private static CrashHandler instance;
 
+    public static String sPath = "/mnt/sdcard/rearview/"; // 默认路径
+
     private UncaughtExceptionHandler mDefaultHandler;
     private Context mContext;
     private Map<String, String> infos = new HashMap<>();
     private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
     private boolean mIsDebug = true;
 
-    private CrashHandler() {}
+    private CrashHandler() {
+        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(this);
+    }
 
     public static CrashHandler getInstance() {
         if (instance == null) {
@@ -52,11 +58,12 @@ public class CrashHandler implements UncaughtExceptionHandler {
         return instance;
     }
 
-    public void init(Context context, boolean isDebug) {
+    public void init(Context context, String path, boolean isDebug) {
         mContext = context;
         mIsDebug = isDebug;
-        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-        Thread.setDefaultUncaughtExceptionHandler(this);
+        if (CommonUtil.isNotEmpty(path)) {
+            sPath = path;
+        }
     }
 
     /**
@@ -64,10 +71,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
      */
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        if (!handleException(ex) && mDefaultHandler != null) {
+        boolean isHandled = handleException(ex);
+        if (!isHandled && mDefaultHandler != null) {
             mDefaultHandler.uncaughtException(thread, ex);
         } else {
-
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(0);
         }
@@ -145,15 +152,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".txt";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                String path = "/mnt/sdcard/rearview/";
-                File dir = new File(path);
+                File dir = new File(sPath);
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                FileOutputStream fos = new FileOutputStream(path + fileName);
+                FileOutputStream fos = new FileOutputStream(sPath + fileName);
                 fos.write(sb.toString().getBytes());
 
-                sendCrashLog2PM(path + fileName);
+                sendCrashLog2PM(sPath + fileName);
                 fos.close();
             }
 
