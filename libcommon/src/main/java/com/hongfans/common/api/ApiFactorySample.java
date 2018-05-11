@@ -2,9 +2,7 @@ package com.hongfans.common.api;
 
 import android.os.Environment;
 
-import com.hongfans.common.api.interceptor.CacheInterceptor;
 import com.hongfans.common.api.interceptor.HttpLoggingInterceptor;
-import com.hongfans.common.api.interceptor.NetworkInterceptor;
 import com.hongfans.common.log.LogUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -20,21 +18,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by MEI on 2018/1/16.
  */
 
-public class ApiFactory {
+public class ApiFactorySample {
 
     public static final String BASE_URL = "https://github.com";
 
     private final Retrofit mRetrofit;
 
     private static class HOLDER {
-        private static final ApiFactory sInstance = new ApiFactory();
+        private static final ApiFactorySample sInstance = new ApiFactorySample();
     }
 
-    public static ApiFactory getInstance() {
+    public static ApiFactorySample getInstance() {
         return HOLDER.sInstance;
     }
 
-    private ApiFactory() {
+    private ApiFactorySample() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
