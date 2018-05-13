@@ -5,7 +5,7 @@
 
 TODO:
 
-com.hongfans.common.api.ApiFactorySample
+ApiFactorySample
 
 
 

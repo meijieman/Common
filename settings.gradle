@@ -1,1 +1,1 @@
-include ':sample', ':libcommon1', ':libcommon'
+include ':sample', ':libbase', ':libhttp', ':libextra'

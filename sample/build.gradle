@@ -52,6 +52,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
-    compile project(':libcommon')
-//    compile(name: 'common_1.1', ext: 'aar')
+    //    compile(name: 'common_1.1', ext: 'aar')
+    compile project(':libbase')
 }

@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "25.0.0"
+
+
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile files('libs/pinyin4j-2.5.0.jar')
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+    //    compile('com.jakewharton:butterknife:8.4.0')
+    //    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile project(':libbase')
+}
+
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+    userOrg = 'super-major' // bintray.com用户名
+    groupId = 'com.major' // jcenter 上的路径，应为域名反转 com.major
+    artifactId = 'extra' // 项目名称
+    publishVersion = '1.0.1' // 版本号
+    desc = '其他类库' // 描述
+    website = 'https://github.com/meijieman/common' // 网站
+}
