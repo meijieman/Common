@@ -36,7 +36,14 @@ dependencies {
     provided project(':libbase')
 }
 
+allprojects {
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
+}
 
+/*
 apply plugin: 'com.novoda.bintray-release'
 
 publish {
@@ -46,4 +53,4 @@ publish {
     publishVersion = '1.0.2' // 版本号
     desc = '网络请求库，基于 retrofit + okhttp + rxjava' // 描述
     website = 'https://github.com/meijieman/common' // 网站
-}
+}*/

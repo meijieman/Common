@@ -55,6 +55,12 @@ makeJar.dependsOn(build)
 //    记得修改版本号
 //    gradlew makeJar
 
+allprojects {
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
+}
 
 //apply plugin: 'com.novoda.bintray-release'
 //
