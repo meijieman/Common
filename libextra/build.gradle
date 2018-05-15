@@ -35,16 +35,16 @@ dependencies {
     //    compile('com.jakewharton:butterknife:8.4.0')
     //    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.google.code.gson:gson:2.8.2'
-    compile project(':libbase')
+    provided project(':libbase')
 }
 
-apply plugin: 'com.novoda.bintray-release'
-
-publish {
-    userOrg = 'super-major' // bintray.com用户名
-    groupId = 'com.major' // jcenter 上的路径，应为域名反转 com.major
-    artifactId = 'extra' // 项目名称
-    publishVersion = '1.0.1' // 版本号
-    desc = '其他类库' // 描述
-    website = 'https://github.com/meijieman/common' // 网站
-}
+//apply plugin: 'com.novoda.bintray-release'
+//
+//publish {
+//    userOrg = 'super-major' // bintray.com用户名
+//    groupId = 'com.major' // jcenter 上的路径，应为域名反转 com.major
+//    artifactId = 'extra' // 项目名称
+//    publishVersion = '1.0.1' // 版本号
+//    desc = '其他类库' // 描述
+//    website = 'https://github.com/meijieman/common' // 网站
+//}
