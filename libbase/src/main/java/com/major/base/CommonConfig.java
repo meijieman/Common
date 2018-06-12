@@ -3,6 +3,7 @@ package com.major.base;
 import android.app.Application;
 
 import com.major.base.log.LogUtil;
+import com.major.base.util.ToastUtil;
 
 /**
  * TODO
@@ -20,6 +21,7 @@ public class CommonConfig {
     private CommonConfig(Application app, String tag, boolean isDebug, boolean isTrack) {
         sInstance = app;
         LogUtil.init(app.getPackageName(), tag, isDebug, isTrack);
+        ToastUtil.init(app.getApplicationContext());
     }
 
     public static class Build {

@@ -43,7 +43,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
     private UncaughtExceptionHandler mDefaultHandler;
     private Context mContext;
     private Map<String, String> infos = new HashMap<>();
-    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+    private DateFormat formatter = new SimpleDateFormat("ss_yyyyMMddHHmmss");
     private boolean mIsDebug = true;
 
     private CrashHandler() {
@@ -148,9 +148,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
         sb.append(result);
 
         try {
-            long timestamp = System.currentTimeMillis();
             String time = formatter.format(new Date());
-            String fileName = "crash-" + time + "-" + timestamp + ".txt";
+            String fileName = time + ".crash";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 File dir = new File(sPath);
                 if (!dir.exists()) {
