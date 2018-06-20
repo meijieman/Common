@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 102
+        versionName "1.0.2"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -62,13 +62,14 @@ allprojects {
     }
 }
 
-//apply plugin: 'com.novoda.bintray-release'
-//
-//publish {
-//    userOrg = 'super-major' // bintray.com用户名
-//    groupId = 'com.major' // jcenter 上的路径，应为域名反转 com.major
-//    artifactId = 'base' // 项目名称
-//    publishVersion = '1.0.1' // 版本号
-//    desc = '常用工具类' // 描述
-//    website = 'https://github.com/meijieman/common' // 网站
-//}
+/*
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+    userOrg = 'super-major' // bintray.com用户名
+    groupId = 'com.major' // jcenter 上的路径，应为域名反转 com.major
+    artifactId = 'base' // 项目名称
+    publishVersion = '1.0.2' // 版本号
+    desc = '常用工具类' // 描述
+    website = 'https://github.com/meijieman/common' // 网站
+}*/

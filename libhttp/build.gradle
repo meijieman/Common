@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 102
-        versionName "1.0.2"
+        versionCode 103
+        versionName "1.0.3"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -43,14 +43,13 @@ allprojects {
     }
 }
 
-/*
 apply plugin: 'com.novoda.bintray-release'
 
 publish {
     userOrg = 'super-major' // bintray.com用户名
     groupId = 'com.major' // jcenter 上的路径，应为域名反转 com.major
     artifactId = 'http' // 项目名称
-    publishVersion = '1.0.2' // 版本号
+    publishVersion = '1.0.3' // 版本号
     desc = '网络请求库，基于 retrofit + okhttp + rxjava' // 描述
     website = 'https://github.com/meijieman/common' // 网站
-}*/
+}
