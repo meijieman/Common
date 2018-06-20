@@ -54,4 +54,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //    compile(name: 'common_1.1', ext: 'aar')
     compile project(':libbase')
+    compile project(':libhttp')
 }

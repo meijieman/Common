@@ -1,6 +1,7 @@
 package com.major.base.util;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 /**
  * TODO
@@ -23,6 +24,16 @@ public class BitmapUtil{
         sourceImg = Bitmap.createBitmap(argb, sourceImg.getWidth(), sourceImg
                 .getHeight(), Bitmap.Config.ARGB_8888);
         return sourceImg;
+    }
+
+    public static Bitmap createRepeater(int width, Bitmap src) {
+        int count = (width + src.getWidth() - 1) / src.getWidth();
+        Bitmap bitmap = Bitmap.createBitmap(width, src.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        for (int idx = 0; idx < count; ++idx) {
+            canvas.drawBitmap(src, idx * src.getWidth(), 0, null);
+        }
+        return bitmap;
     }
 
     /**

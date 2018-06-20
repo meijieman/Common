@@ -33,9 +33,6 @@ public class ApiException extends RuntimeException {
     private static final int SERVICE_UNAVAILABLE = 503;
     private static final int GATEWAY_TIMEOUT = 504;
 
-    private int mCode;
-    private String mMsg;
-
     private ECPair mECPair;
 
 
@@ -104,5 +101,12 @@ public class ApiException extends RuntimeException {
             LogUtil.e(desc);
             return new ApiException(new ECPair.ECPairImpl(ECPair.ERROR_UNKNOWN.getCode(), desc));
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ApiException{" +
+                "mECPair=" + mECPair +
+                '}';
     }
 }

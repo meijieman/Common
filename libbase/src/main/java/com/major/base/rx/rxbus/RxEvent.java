@@ -7,10 +7,8 @@ package com.major.base.rx.rxbus;
 
 public class RxEvent {
 
-    public static final int TYPE_PLAY_MODEL_CHANGE = 1;
-
-    public int type;
-    public Object tag;
-
+    public int what;
+    public Object obj1;
+    public Object obj2;
 
 }

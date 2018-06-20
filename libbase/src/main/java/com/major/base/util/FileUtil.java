@@ -22,6 +22,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -832,5 +834,35 @@ public class FileUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean writeFileToSD(String path, String logstr) {
+        FileHelp.createFolderIfNotExist(path);
+        File file = new File(path);
+        File[] filelist = file.listFiles();
+        int size = filelist.length;
+        try {
+            if (size <= 0) {
+                String fileName = CreateSysTimeFileName();
+                return FileHelp.saveFile(logstr, path, fileName, false);
+            } else {
+                for (int i = 0; i < size; i++) {
+                    if (filelist[i].length() < 512000) {
+                        return FileHelp.saveFile(logstr, path, filelist[i].getName(), true);
+                    }
+                }
+                String fileName = CreateSysTimeFileName();
+                return FileHelp.saveFile(logstr, path, fileName, true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static String CreateSysTimeFileName() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        return formatter.format(curDate) + ".txt";
     }
 }
