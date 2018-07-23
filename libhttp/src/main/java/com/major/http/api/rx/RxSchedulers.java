@@ -1,7 +1,10 @@
 package com.major.http.api.rx;
 
+import com.major.http.api.exception.ApiException;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -61,5 +64,13 @@ public class RxSchedulers {
                         .onErrorResumeNext(new RxErr<T>());
             }
         };
+    }
+
+    static class RxErr<R> implements Func1<Throwable, Observable<R>>{
+
+        @Override
+        public Observable<R> call(Throwable throwable) {
+            return Observable.error(ApiException.handleException(throwable));
+        }
     }
 }
