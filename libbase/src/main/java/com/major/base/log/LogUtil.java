@@ -26,6 +26,7 @@ public class LogUtil {
     private static boolean mIsDebug;
     private static boolean mIsTrack;
     private static String mPkgName;
+    private static SimpleDateFormat sYyyyMMdd = new SimpleDateFormat("yyyyMMdd");
 
     private LogUtil() {
     }
@@ -100,7 +101,7 @@ public class LogUtil {
         RxTask.doOnIOThread(new RxTask.IOTask() {
             @Override
             public void onIOThread() {
-                String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".log";
+                String yyyyMMdd = sYyyyMMdd.format(new Date()) + ".log";
                 FileUtil.saveFile(log, parent, yyyyMMdd, true);
             }
         });
@@ -111,7 +112,7 @@ public class LogUtil {
         RxTask.doOnIOThread(new RxTask.IOTask() {
             @Override
             public void onIOThread() {
-                String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".log";
+                String yyyyMMdd = sYyyyMMdd.format(new Date()) + ".log";
                 FileUtil.saveFile(log, parent, yyyyMMdd, true);
             }
         });
@@ -125,7 +126,7 @@ public class LogUtil {
         RxTask.doOnIOThread(new RxTask.IOTask() {
             @Override
             public void onIOThread() {
-                String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".log";
+                String yyyyMMdd = sYyyyMMdd.format(new Date()) + ".log";
                 FileUtil.saveFile(log, parent, yyyyMMdd, true);
             }
         });

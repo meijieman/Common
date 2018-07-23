@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.major.base.util.CloseUtil;
 import com.major.base.util.CommonUtil;
-import com.major.base.util.FileHelp;
+import com.major.base.util.SDCardUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -86,7 +86,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         //收集设备参数信息
         collectDeviceInfo(mContext);
         //write failed: ENOSPC (No space left on device)
-        long availableSize = FileHelp.getSDAvailableSize();
+        long availableSize = SDCardUtil.getSDAvailableSize();
         if (availableSize < 1024 * 1024) {
             return false;
         }

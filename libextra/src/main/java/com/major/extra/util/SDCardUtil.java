@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 
 import static android.content.ContentValues.TAG;
 
@@ -116,5 +117,21 @@ public class SDCardUtil{
         }
 
         return 0;
+    }
+
+    // 转换文件大小
+    public static String formatSize(long size){
+        DecimalFormat df = new DecimalFormat("#0.00");
+        String fileSizeString;
+        if(size < 1024){
+            fileSizeString = df.format((double) size) + "B";
+        } else if(size < 1024 * 1024){
+            fileSizeString = df.format((double) size / (1024)) + "KB";
+        } else if(size < 1024 * 1024 * 1024){
+            fileSizeString = df.format((double) size / (1024 * 1024)) + "MB";
+        } else {
+            fileSizeString = df.format((double) (size / (1024 * 1024 * 1024))) + "GB";
+        }
+        return fileSizeString;
     }
 }
