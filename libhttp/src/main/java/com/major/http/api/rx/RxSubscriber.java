@@ -1,7 +1,6 @@
 package com.major.http.api.rx;
 
 import com.major.http.api.exception.ApiException;
-import com.major.http.api.exception.ECPair;
 
 import rx.Subscriber;
 
@@ -23,13 +22,13 @@ public abstract class RxSubscriber<T> extends Subscriber<T>{
 
     @Override
     public void onError(Throwable e){
-        ECPair ecPair;
+        ApiException ex;
         if(e instanceof ApiException){
-            ecPair = ((ApiException) e).getECPair();
+            ex = (ApiException) e;
         } else {
-            ecPair = ECPair.ECPairImpl.ERROR_UNKNOWN;
+            ex = new ApiException(e);
         }
-        onError(ecPair.getDesc(), ecPair.getCode());
+        onError(ex.getDesc(), ex.getCode());
     }
 
     /**

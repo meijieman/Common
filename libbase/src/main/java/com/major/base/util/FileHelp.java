@@ -139,7 +139,7 @@ public class FileHelp {
 
     // 创建目录
     public static void createDirIfNotExist(String path) {
-        if (StringUtil.isNotEmpty(path)) {
+        if (CommonUtil.isNotEmpty(path)) {
             File file = new File(path);
             if (!file.exists()) {
                 file.mkdirs();

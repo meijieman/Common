@@ -25,18 +25,6 @@ public class StringUtil {
 
     private final static char[] hexDigits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-    private StringUtil() {
-
-    }
-
-    public static boolean isEmpty(String msg) {
-        return msg == null || msg.isEmpty();
-    }
-
-    public static boolean isNotEmpty(String msg) {
-        return !isEmpty(msg);
-    }
-
     public static String formatLocal(String format, Object... args) {
         return String.format(Locale.CHINESE, format, args);
     }

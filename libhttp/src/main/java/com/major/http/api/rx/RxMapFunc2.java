@@ -2,7 +2,6 @@ package com.major.http.api.rx;
 
 import com.major.base.log.LogUtil;
 import com.major.http.api.exception.ApiException;
-import com.major.http.api.exception.ECPair;
 
 import rx.functions.Func1;
 
@@ -29,7 +28,7 @@ final class RxMapFunc2<F> implements Func1<RxResp<F>, RxResp<F>> {
         if (mChecker.isSuccess(code)) {
             return f;
         } else {
-            throw new ApiException(new ECPair.ECPairImpl(f.getCode(), f.getMsg()));
+            throw new ApiException(f.getCode(), f.getMsg());
         }
     }
 }

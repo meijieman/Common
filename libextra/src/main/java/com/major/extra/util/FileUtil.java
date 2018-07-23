@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.major.base.util.CloseUtil;
-import com.major.base.util.StringUtil;
+import com.major.base.util.CommonUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -182,7 +182,7 @@ public class FileUtil{
      * @param comment  该键值对的注释
      */
     public static void writeProperties(String filePath, String key, String value, String comment){
-        if(StringUtil.isEmpty(key) || StringUtil.isEmpty(filePath)){
+        if(CommonUtil.isEmpty(key) || CommonUtil.isEmpty(filePath)){
             return;
         }
         FileInputStream fis = null;
@@ -207,7 +207,7 @@ public class FileUtil{
      * 根据值读取
      */
     public static String readProperties(String filePath, String key, String defaultValue){
-        if(StringUtil.isEmpty(key) || StringUtil.isEmpty(filePath)){
+        if(CommonUtil.isEmpty(key) || CommonUtil.isEmpty(filePath)){
             return null;
         }
         String value = null;
@@ -280,7 +280,7 @@ public class FileUtil{
 
     // 创建目录
     public static void createDirIfNotExist(String path){
-        if(!StringUtil.isEmpty(path)){
+        if(!CommonUtil.isEmpty(path)){
             File file = new File(path);
             if(!file.exists()){
                 file.mkdirs();
@@ -295,7 +295,7 @@ public class FileUtil{
      * @return true means the file path is sdcard path
      */
     public static final boolean isSDCardPath(String path){
-        if(StringUtil.isEmpty(path)){
+        if(CommonUtil.isEmpty(path)){
             return false;
         }
         String sdRootPath = Environment.getExternalStorageDirectory().getAbsolutePath();

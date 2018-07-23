@@ -3,7 +3,6 @@ package com.major.extra.util;
 import android.text.TextUtils;
 
 import com.major.base.util.CommonUtil;
-import com.major.base.util.StringUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
@@ -481,7 +480,7 @@ public class REUtil{
     public static boolean isChinese(String str){
         Boolean isChinese = true;
         String chinese = "[\u0391-\uFFE5]";
-        if(!StringUtil.isEmpty(str)){
+        if(!CommonUtil.isEmpty(str)){
             // 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1
             for(int i = 0; i < str.length(); i++){
                 // 获取一个字符
@@ -555,7 +554,7 @@ public class REUtil{
      * 是否为数字
      */
     public static boolean isDigit(String digitString){
-        if(!StringUtil.isEmpty(digitString)){
+        if(!CommonUtil.isEmpty(digitString)){
             String regex = "[0-9]*";
             return isMatch(regex, digitString);
         }

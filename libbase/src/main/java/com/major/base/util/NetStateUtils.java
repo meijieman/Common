@@ -1,5 +1,6 @@
 package com.major.base.util;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -156,6 +157,7 @@ public class NetStateUtils {
      *
      * @return
      */
+    @SuppressLint("MissingPermission")
     public static String getProvider(Context context) {
         String provider = "";
         try {
@@ -163,11 +165,11 @@ public class NetStateUtils {
             if (telephonyManager != null) {
                 String IMSI = telephonyManager.getSubscriberId();
                 LogUtil.i("imsi " + IMSI);
-                if (StringUtil.isEmpty(IMSI) || IMSI.length() < 5) {
+                if (CommonUtil.isEmpty(IMSI) || IMSI.length() < 5) {
                     if (TelephonyManager.SIM_STATE_READY == telephonyManager
                             .getSimState()) {
                         String operator = telephonyManager.getSimOperator();
-                        if (StringUtil.isNotEmpty(operator) && operator.length() >= 5) {
+                        if (CommonUtil.isNotEmpty(operator) && operator.length() >= 5) {
                             return operator.substring(0, 5);
                         }
                     }
@@ -181,26 +183,28 @@ public class NetStateUtils {
         return provider;
     }
 
+    @SuppressLint("MissingPermission")
     private static String getNetworkInfo() {
         String type = "";
         // 获取网络连接情况
         ConnectivityManager mConnectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mobileNetworkInfo = mConnectivity
-                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        NetworkInfo wifiNetworkInfo = mConnectivity
-                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (mobileNetworkInfo != null && mobileNetworkInfo.isConnected()) {
-            mobileNetwork = true;
-            type = getCurrentNetworkType(context);
-        } else {
-            mobileNetwork = false;
+        if(mConnectivity != null){
+            NetworkInfo mobileNetworkInfo = mConnectivity.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            NetworkInfo wifiNetworkInfo = mConnectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if (mobileNetworkInfo != null && mobileNetworkInfo.isConnected()) {
+                mobileNetwork = true;
+                type = getCurrentNetworkType(context);
+            } else {
+                mobileNetwork = false;
+            }
+            if (wifiNetworkInfo != null && wifiNetworkInfo.isConnected()) {
+                wifiNetwork = true;
+                type = getCurrentNetworkType(context);
+            } else {
+                wifiNetwork = false;
+            }
         }
-        if (wifiNetworkInfo != null && wifiNetworkInfo.isConnected()) {
-            wifiNetwork = true;
-            type = getCurrentNetworkType(context);
-        } else {
-            wifiNetwork = false;
-        }
+
         return type;
     }
 
