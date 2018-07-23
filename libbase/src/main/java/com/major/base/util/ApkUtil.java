@@ -15,8 +15,6 @@ import java.util.List;
 
 public class ApkUtil {
 
-    private static final String TAG = "ApkUtil";
-
     /**
      * 获取应用程序名称
      */
@@ -33,14 +31,13 @@ public class ApkUtil {
     }
 
     /**
-     * [获取应用程序版本名称信息]<BR>
      *
      * @return 当前应用的版本名称
      */
     public static String getVersionName(Context context){
         try{
-            PackageManager packageManager = context.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            PackageManager pm = context.getPackageManager();
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
             return packageInfo.versionName;
         } catch(NameNotFoundException e){
             e.printStackTrace();
@@ -80,7 +77,7 @@ public class ApkUtil {
      * @param packageName
      * @return
      */
-    public static PackageInfo getInstalledApkPackageInfo(Context context, String packageName){
+    public static PackageInfo getInstalledPackageInfo(Context context, String packageName){
         PackageManager pm = context.getPackageManager();
         List<PackageInfo> apps = pm.getInstalledPackages(PackageManager.GET_SIGNATURES);
 
@@ -149,7 +146,6 @@ public class ApkUtil {
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse("file://" + apkPath), "application/vnd.android.package-archive");
-
         context.startActivity(intent);
     }
 
@@ -159,24 +155,4 @@ public class ApkUtil {
         intent.setDataAndType(Uri.fromFile(new File(apkPath)), "application/vnd.android.package-archive");
         context.startActivity(intent);
     }
-
-    public static void DeleteAPKFile(File file){
-        if(file.isFile()){
-            file.delete();
-            return;
-        }
-        if(file.isDirectory()){
-            File[] childFile = file.listFiles();
-            if(childFile == null || childFile.length == 0){
-                return;
-            }
-            for(File f : childFile){
-                if(f.getName().contains(".apk") || f.getName().contains(".patch")){
-                    DeleteAPKFile(f);
-                }
-
-            }
-        }
-    }
-
 }

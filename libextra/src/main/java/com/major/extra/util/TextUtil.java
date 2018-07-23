@@ -11,15 +11,15 @@ import android.text.style.ForegroundColorSpan;
 public class TextUtil{
 
     public static Spannable changeColor(String beforeText, String centerText, String endText, String color){
-        return (Spannable)Html.fromHtml(beforeText + "<font color=\"#" + color + "\">" + centerText + "</font>" + endText);
+        return (Spannable) Html.fromHtml(beforeText + "<font color=\"#" + color + "\">" + centerText + "</font>" + endText);
     }
 
     public static Spannable changeColor(String centerText, String endText, String color){
-        return (Spannable)Html.fromHtml("<font color=\"#" + color + "\">" + centerText + "</font>" + endText);
+        return (Spannable) Html.fromHtml("<font color=\"#" + color + "\">" + centerText + "</font>" + endText);
     }
 
     public static Spannable changeColor(String centerText, String color){
-        return (Spannable)Html.fromHtml("<font color=\"#" + color + "\">" + centerText + "</font>");
+        return (Spannable) Html.fromHtml("<font color=\"#" + color + "\">" + centerText + "</font>");
     }
 
     /**
@@ -49,10 +49,10 @@ public class TextUtil{
      * @param resId 文字资源
      * @return 返回链接样式的字符串
      */
-    public static Spanned getHtmlStyleString(int resId){
+    public static Spanned getHtmlStyleString(String text){
         StringBuilder sb = new StringBuilder();
-        sb.append("<a href=\"\"><u><b>").append(UIUtils.getString(resId))
-          .append(" </b></u></a>");
+        sb.append("<a href=\"\"><u><b>").append(text)
+                .append(" </b></u></a>");
         return Html.fromHtml(sb.toString());
     }
 }

@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 
 import com.major.base.util.CloseUtil;
@@ -43,7 +42,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
     private UncaughtExceptionHandler mDefaultHandler;
     private Context mContext;
     private Map<String, String> infos = new HashMap<>();
-    private DateFormat formatter = new SimpleDateFormat("ss_yyyyMMddHHmmss");
+    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
     private boolean mIsDebug = true;
 
     private CrashHandler() {
@@ -137,7 +136,11 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
         Writer writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
-        ex.printStackTrace(printWriter);
+        if (ex == null) {
+            ex = new Throwable("exception 为 null");
+        } else {
+            ex.printStackTrace(printWriter);
+        }
         Throwable cause = ex.getCause();
         while (cause != null) {
             cause.printStackTrace(printWriter);
@@ -149,18 +152,16 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
         try {
             String time = formatter.format(new Date());
-            String fileName = time + ".crash";
-            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                File dir = new File(sPath);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                FileOutputStream fos = new FileOutputStream(sPath + fileName);
-                fos.write(sb.toString().getBytes());
-
-                sendCrashLog2PM(sPath + fileName);
-                fos.close();
+            String fileName = "crash-" + time + ".log";
+            File dir = new File(sPath);
+            if (!dir.exists()) {
+                dir.mkdirs();
             }
+            FileOutputStream fos = new FileOutputStream(sPath + fileName);
+            fos.write(sb.toString().getBytes());
+
+            sendCrashLog2PM(sPath + fileName);
+            fos.close();
 
             return fileName;
         } catch (Exception e) {
@@ -187,7 +188,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         String s = null;
         try {
             fis = new FileInputStream(fileName);
-            reader = new BufferedReader(new InputStreamReader(fis, "GBK"));
+            reader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
             while (true) {
                 s = reader.readLine();
                 if (s == null) {

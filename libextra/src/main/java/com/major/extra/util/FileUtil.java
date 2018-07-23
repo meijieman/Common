@@ -1,13 +1,13 @@
 package com.major.extra.util;
 
-import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import com.major.base.util.CloseUtil;
+import com.major.base.util.StringUtil;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,13 +17,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -31,52 +27,9 @@ import java.util.Properties;
  */
 public class FileUtil{
 
-    public static final String ROOT_DIR = "Android/data/" + UIUtils.getPackageName();
-
     /**
-     * 获取应用目录，当SD卡存在时，获取SD卡上的目录，当SD卡不存在时，获取应用的cache目录
-     *
-     * @param name
-     * @return
+     * 创建文件夹
      */
-    public static String getDir(String name){
-        StringBuilder sb = new StringBuilder();
-        if(SDCardUtil.isSdCardMounted()){
-            sb.append(getExternalStoragePath());
-        } else {
-            sb.append(getCachePath());
-        }
-        sb.append(name);
-        sb.append(File.separator);
-        String path = sb.toString();
-        if(createDirs(path)){
-            return path;
-        } else {
-            return null;
-        }
-    }
-
-    /** 获取SD下的应用目录 */
-    public static String getExternalStoragePath(){
-        StringBuilder sb = new StringBuilder();
-        sb.append(Environment.getExternalStorageDirectory().getAbsolutePath());
-        sb.append(File.separator);
-        sb.append(ROOT_DIR);
-        sb.append(File.separator);
-        return sb.toString();
-    }
-
-    /** 获取应用的cache目录 */
-    public static String getCachePath(){
-        File f = UIUtils.getContext().getCacheDir();
-        if(null == f){
-            return null;
-        } else {
-            return f.getAbsolutePath() + "/";
-        }
-    }
-
-    /** 创建文件夹 */
     public static boolean createDirs(String dirPath){
         File file = new File(dirPath);
         if(!file.exists() || !file.isDirectory()){
@@ -85,14 +38,18 @@ public class FileUtil{
         return true;
     }
 
-    /** 复制文件，可以选择是否删除源文件 */
+    /**
+     * 复制文件，可以选择是否删除源文件
+     */
     public static boolean copyFile(String srcPath, String destPath, boolean deleteSrc){
         File srcFile = new File(srcPath);
         File destFile = new File(destPath);
         return copyFile(srcFile, destFile, deleteSrc);
     }
 
-    /** 复制文件，可以选择是否删除源文件 */
+    /**
+     * 复制文件，可以选择是否删除源文件
+     */
     public static boolean copyFile(File srcFile, File destFile, boolean deleteSrc){
         if(!srcFile.exists() || !srcFile.isFile()){
             return false;
@@ -111,22 +68,24 @@ public class FileUtil{
             if(deleteSrc){
                 srcFile.delete();
             }
-        } catch(Exception e){
+        }catch(Exception e){
             return false;
-        } finally {
+        }finally{
 
         }
 
         return true;
     }
 
-    /** 修改文件的权限,例如"777"等 */
+    /**
+     * 修改文件的权限,例如"777"等
+     */
     public static void chmod(String path, String mode){
         try{
             String command = "chmod " + mode + " " + path;
             Runtime runtime = Runtime.getRuntime();
             runtime.exec(command);
-        } catch(Exception e){
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
@@ -158,9 +117,9 @@ public class FileUtil{
                 }
                 res = true;
             }
-        } catch(Exception e){
+        }catch(Exception e){
             e.printStackTrace();
-        } finally {
+        }finally{
 
 
         }
@@ -206,9 +165,9 @@ public class FileUtil{
                 raf.write(content);
                 res = true;
             }
-        } catch(Exception e){
+        }catch(Exception e){
             e.printStackTrace();
-        } finally {
+        }finally{
 
         }
         return res;
@@ -222,8 +181,7 @@ public class FileUtil{
      * @param value    值
      * @param comment  该键值对的注释
      */
-    public static void writeProperties(String filePath, String key,
-            String value, String comment){
+    public static void writeProperties(String filePath, String key, String value, String comment){
         if(StringUtil.isEmpty(key) || StringUtil.isEmpty(filePath)){
             return;
         }
@@ -240,13 +198,14 @@ public class FileUtil{
             p.setProperty(key, value);
             fos = new FileOutputStream(f);
             p.store(fos, comment);
-        } catch(Exception e){
+        }catch(Exception e){
             e.printStackTrace();
-        } finally {
         }
     }
 
-    /** 根据值读取 */
+    /**
+     * 根据值读取
+     */
     public static String readProperties(String filePath, String key, String defaultValue){
         if(StringUtil.isEmpty(key) || StringUtil.isEmpty(filePath)){
             return null;
@@ -262,123 +221,32 @@ public class FileUtil{
             Properties p = new Properties();
             p.load(fis);
             value = p.getProperty(key, defaultValue);
-        } catch(IOException e){
+        }catch(IOException e){
             e.printStackTrace();
-        } finally {
-
         }
+
         return value;
     }
 
-    /** 把字符串键值对的map写入文件 */
-    public static void writeMap(String filePath, Map<String, String> map, boolean append, String comment){
-        if(map == null || map.size() == 0 || StringUtil.isEmpty(filePath)){
-            return;
-        }
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
-        File f = new File(filePath);
-        try{
-            if(!f.exists() || !f.isFile()){
-                f.createNewFile();
-            }
-            Properties p = new Properties();
-            if(append){
-                fis = new FileInputStream(f);
-                p.load(fis);// 先读取文件，再把键值对追加到后面
-            }
-            p.putAll(map);
-            fos = new FileOutputStream(f);
-            p.store(fos, comment);
-        } catch(Exception e){
-            e.printStackTrace();
-        } finally {
-
-        }
-    }
-
-    /** 把字符串键值对的文件读入map */
-    public static Map<String, String> readMap(String filePath, String defaultValue){
-        if(StringUtil.isEmpty(filePath)){
-            return null;
-        }
-        Map<String, String> map = null;
-        FileInputStream fis = null;
-        File f = new File(filePath);
-        try{
-            if(!f.exists() || !f.isFile()){
-                f.createNewFile();
-            }
-            fis = new FileInputStream(f);
-            Properties p = new Properties();
-            p.load(fis);
-            map = new HashMap<>((Map)p);// 因为properties继承了map，所以直接通过p来构造一个map
-        } catch(Exception e){
-            e.printStackTrace();
-        } finally {
-        }
-        return map;
-    }
-
-    /** 改名 */
-    public static boolean copy(String src, String des, boolean delete){
-        File file = new File(src);
-        if(!file.exists()){
-            return false;
-        }
-        File desFile = new File(des);
-        FileInputStream in = null;
-        FileOutputStream out = null;
-        try{
-            in = new FileInputStream(file);
-            out = new FileOutputStream(desFile);
-            byte[] buffer = new byte[1024];
-            int count = -1;
-            while((count = in.read(buffer)) != -1){
-                out.write(buffer, 0, count);
-                out.flush();
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-            return false;
-        } finally {
-        }
-        if(delete){
-            file.delete();
-        }
-        return true;
-    }
-
-    public static boolean createFolderIfNotExist(String strFolder){
-
-        File basefile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/rearview");
-        if(!basefile.exists()){
-            boolean result = basefile.mkdir();
-        }
-        File file = new File(strFolder);
-
-        if(!file.exists()){
-            return file.mkdir();
-        }
-        return true;
-    }
-
     public static boolean copyFile(String fromFile, String toFile){
+        InputStream is = null;
+        OutputStream os = null;
         try{
-            InputStream is = new FileInputStream(fromFile);
-            OutputStream os = new FileOutputStream(toFile);
+            is = new FileInputStream(fromFile);
+            os = new FileOutputStream(toFile);
             byte bt[] = new byte[1024];
             int c;
             while((c = is.read(bt)) > 0){
                 os.write(bt, 0, c);
             }
-            is.close();
-            os.close();
 
             return true;
-        } catch(Exception ex){
+        }catch(Exception ex){
             ex.printStackTrace();
+
             return false;
+        }finally{
+            CloseUtil.close(is, os);
         }
     }
 
@@ -401,21 +269,10 @@ public class FileUtil{
             }
 
             return content.toString();
-
-        } catch(Exception e){
+        }catch(Exception e){
             e.printStackTrace();
-        } finally {
-            try{
-                if(br != null){
-                    br.close();
-                }
-
-                if(fis != null){
-                    fis.close();
-                }
-            } catch(IOException e){
-                e.printStackTrace();
-            }
+        }finally{
+            CloseUtil.close(br, fis);
         }
 
         return "";
@@ -429,86 +286,6 @@ public class FileUtil{
                 file.mkdirs();
             }
         }
-    }
-
-    /**
-     * 获取指定文件夹、文件大小
-     */
-    public static long getFileSize(File f){
-        long size = 0L;
-        File[] list = f.listFiles();
-        if(list == null || list.length == 0){
-            return 0L;
-        }
-        for(File file : list){
-            if(file.isDirectory()){
-                size = size + getFileSize(file);
-            } else {
-                // 排除播放文件
-                if(!file.getName().equalsIgnoreCase("cache.db") && !file.getName().equalsIgnoreCase("private_data.db")){
-                    size = size + file.length();
-                }
-            }
-        }
-
-        return size;
-    }
-
-
-    /**
-     * create parent dir by file path
-     */
-    public static boolean createFileParentDir(String filePath){
-        File file = new File(filePath);
-        if(file.exists()){
-            return true;// parent dir exist
-        } else {
-            File parentFile = file.getParentFile();
-            if(parentFile != null){
-                if(parentFile.exists()){
-                    return true;// parent dir exist
-                } else {
-                    return parentFile.mkdirs();// create parent dir
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * get file suffix by file path
-     *
-     * @param filePath file path
-     * @return file suffix,return null means failed
-     */
-    public static String getFileSuffix(String filePath){
-        if(!TextUtils.isEmpty(filePath)){
-            int start = filePath.lastIndexOf(".");
-            if(start != -1){
-                return filePath.substring(start + 1);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * whether the file path can write
-     *
-     * @param path file path
-     * @return true means can write to
-     */
-    public static final boolean canWrite(String path){
-        // if sdcard,needs the permission:  android.permission.WRITE_EXTERNAL_STORAGE
-        if(isSDCardPath(path)){
-            if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-                // TODO write bytes for test
-                return true;
-            }
-        } else {
-            // TODO write bytes for test
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -538,9 +315,9 @@ public class FileUtil{
                 file.mkdirs();// create to make sure it is not error below
             }
             final StatFs stats = new StatFs(fileDirPath);
-            long result = (long)stats.getBlockSize() * (long)stats.getAvailableBlocks();
+            long result = (long) stats.getBlockSize() * (long) stats.getAvailableBlocks();
             return result;
-        } catch(Exception e){
+        }catch(Exception e){
             e.printStackTrace();
             return -1;
         }
@@ -553,13 +330,12 @@ public class FileUtil{
      * @return true means exist
      */
     public static boolean isFileExist(String filePath){
-
         if(!isFilePath(filePath)){
             return false;
         }
 
         File file = new File(filePath);
-        return file != null && file.exists() && file.isFile();
+        return file.exists() && file.isFile();
 
     }
 
@@ -574,33 +350,6 @@ public class FileUtil{
             return false;
         }
         return path.startsWith(File.separator);
-    }
-
-    public static boolean deleteFile(String path){
-        return deleteFile(new File(path));
-    }
-
-
-    /**
-     * 从SD卡中删除文件
-     */
-    public static boolean deleteFile(File file){
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-            if(file.exists()){
-                if(file.isFile()){
-                    return file.delete();
-                } else if(file.isDirectory()){
-                    // 如果它是一个目录
-                    File files[] = file.listFiles();
-                    for(int i = 0; i < files.length; i++){ // 遍历目录下所有的文件
-                        deleteFile(files[i]); // 把每个文件 用这个方法进行迭代
-                    }
-                }
-                return file.delete();
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -625,7 +374,7 @@ public class FileUtil{
                 PrintWriter pw = new PrintWriter(fw, true);
                 pw.println(msg);
                 return true;
-            } catch(IOException e){
+            }catch(IOException e){
                 Log.e("FileUtil", "saveFile: 发生异常");
                 e.printStackTrace();
                 return false;
@@ -694,59 +443,6 @@ public class FileUtil{
     }
 
     /**
-     * 剪切目录，先将目录拷贝完后再删除源目录
-     *
-     * @param sourceDir
-     * @param targetDir
-     * @return
-     */
-    public static boolean cutDir(String sourceDir, String targetDir){
-        File sourceFile = new File(sourceDir);
-        File targetFile = new File(targetDir);
-        boolean isCopySuccessful = copyDir(sourceFile, targetFile);
-        if(isCopySuccessful){
-            return deleteDir(sourceDir);
-        }
-        return false;
-    }
-
-    /**
-     * 删除目录
-     *
-     * @param dir
-     * @return
-     */
-    public static boolean deleteDir(String dir){
-        File file = new File(dir);
-        if(!file.exists()){
-            return false;
-        }
-        File[] files = file.listFiles();
-        boolean isSuccessful = false;
-        if(files.length == 0){
-            file.delete();
-            return true;
-        }
-        // 对所有列表中的路径进行判断是文件还是文件夹
-        for(int i = 0; i < files.length; i++){
-            if(files[i].isDirectory()){
-                isSuccessful = deleteDir(files[i].getAbsolutePath());
-            } else if(files[i].isFile()){
-                isSuccessful = deleteFile(files[i].getAbsolutePath());
-            }
-
-            if(!isSuccessful){
-                // 如果有删除失败的情况直接跳出循环
-                break;
-            }
-        }
-        if(isSuccessful){
-            file.delete();
-        }
-        return isSuccessful;
-    }
-
-    /**
      * 将流写入指定文件
      *
      * @param inputStream
@@ -769,101 +465,12 @@ public class FileUtil{
             while((length = inputStream.read(bs)) != -1){
                 fileOutputStream.write(bs, 0, length);
             }
-        } catch(Exception e){
+        }catch(Exception e){
             isSuccessful = false;
-        } finally {
-            try{
-                if(fileOutputStream != null){
-                    fileOutputStream.close();
-                }
-            } catch(IOException e){
-            }
+        }finally{
+            CloseUtil.close(fileOutputStream);
         }
         return isSuccessful;
-    }
-
-    /**
-     * 创建目录
-     *
-     * @param path
-     */
-    public static void createDir(String path){
-        File file = new File(path);
-        if(!file.exists()){
-            file.mkdirs();
-        }
-    }
-
-    /**
-     * 将object对象写入outFile文件
-     *
-     * @param outFile
-     * @param object
-     * @param context
-     */
-    public static void writeObject2File(String outFile, Object object, Context context){
-        ObjectOutputStream out = null;
-        FileOutputStream outStream = null;
-        try{
-            File dir = context.getDir("cache", Context.MODE_PRIVATE);
-            outStream = new FileOutputStream(new File(dir, outFile));
-            out = new ObjectOutputStream(new BufferedOutputStream(outStream));
-            out.writeObject(object);
-            out.flush();
-        } catch(Exception e){
-        } finally {
-            if(outStream != null){
-                try{
-                    outStream.close();
-                } catch(IOException e){
-                }
-            }
-            if(out != null){
-                try{
-                    out.close();
-                } catch(IOException e){
-                }
-            }
-        }
-    }
-
-    /**
-     * 从outFile文件读取对象
-     *
-     * @param filePath
-     * @param context
-     * @return
-     */
-    public static Object readObjectFromPath(String filePath, Context context){
-        Object object = null;
-        ObjectInputStream in = null;
-        FileInputStream inputStream = null;
-        try{
-            File dir = context.getDir("cache", Context.MODE_PRIVATE);
-            File f = new File(dir, filePath);
-            if(f == null || !f.exists()){
-                return null;
-            }
-            inputStream = new FileInputStream(new File(dir, filePath));
-            in = new ObjectInputStream(new BufferedInputStream(inputStream));
-            object = in.readObject();
-        } catch(Exception e){
-        } finally {
-            if(in != null){
-                try{
-                    in.close();
-                } catch(IOException e){
-                }
-            }
-            if(inputStream != null){
-                try{
-                    inputStream.close();
-                } catch(IOException e){
-                }
-            }
-
-        }
-        return object;
     }
 
     /**
@@ -884,14 +491,10 @@ public class FileUtil{
                 line = br.readLine();
             }
             return sb.toString();
-        } catch(Exception e){
-        } finally {
-            if(br != null){
-                try{
-                    br.close();
-                } catch(IOException e){
-                }
-            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            CloseUtil.close(br);
         }
         return null;
     }
@@ -927,7 +530,8 @@ public class FileUtil{
                 desFile.createNewFile();
             }
             chmodFile(desFile.getAbsolutePath(), mode);
-        } catch(Exception e){
+        }catch(Exception e){
+            e.printStackTrace();
         }
         return desFile;
     }
@@ -942,9 +546,8 @@ public class FileUtil{
         String cmd = "chmod " + mode + " " + fileAbsPath;
         try{
             Runtime.getRuntime().exec(cmd);
-        } catch(Exception e){
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
-
-
 }

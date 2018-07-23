@@ -1,11 +1,11 @@
-package com.major.http.api;
+package com.major.http.api.rx;
 
 /**
  * 后台返回数据实体
  * <p>
  * Created by MEI on 2017/3/31.
  */
-public class ResponseBean<T> {
+public class RxResp<T> {
 
     private int code;
     private String msg;
@@ -37,7 +37,7 @@ public class ResponseBean<T> {
 
     @Override
     public String toString() {
-        return "ResponseBean{" +
+        return "RxResp{" +
                 "code=" + code +
                 ", msg='" + msg + '\'' +
                 ", data=" + data +

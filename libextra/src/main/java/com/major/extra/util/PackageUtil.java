@@ -15,6 +15,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.major.base.util.CommonUtil;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -314,7 +316,7 @@ public class PackageUtil{
      * 获取已安装的全部应用信息
      */
     public static boolean isInsatalled(Context context, String pkg){
-        if(!StringUtil.isEmpty(pkg)){
+        if(CommonUtil.isNotEmpty(pkg)){
             List<PackageInfo> list = getInsatalledPackages(context);
             if(list != null){
                 for(PackageInfo pi : list){

@@ -34,7 +34,11 @@ public class ApiException extends RuntimeException {
     private static final int GATEWAY_TIMEOUT = 504;
 
     private ECPair mECPair;
+    private static HandleException sHandleException = HandleException.DEFAULT;
 
+    public static void addHandle(HandleException exception) {
+        sHandleException = exception;
+    }
 
     public ApiException(ECPair ecPair) {
         mECPair = ecPair;
@@ -74,21 +78,16 @@ public class ApiException extends RuntimeException {
                     // 未定义 http 异常
                     return new ApiException(new ECPair.ECPairImpl(httpEx.code(), ECPair.HTTP_UNKNOW.getDesc()));
             }
-        } else if (e instanceof ApiException) {
-            //服务器返回的错误
-            // 4019 token 失效，统一处理
-            if (ECPair.TOKEN_INVALID.equals(((ApiException) e).getECPair())) {
-                return new ApiException(ECPair.TOKEN_INVALID);
-            }
-            return (ApiException) e;
         } else if (e instanceof JsonParseException
                 || e instanceof JSONException
                 || e instanceof MalformedJsonException
                 || e instanceof ParseException) {
             return new ApiException(ECPair.ERROR_PARSE);
         } else if (e instanceof ConnectException) {
+            // 一次通讯交互中，如果请求失败，说明未能成功请求到服务器，可以允许用户再次提交。
             return new ApiException(ECPair.ERROR_NETWORK_CONNECT);
         } else if (e instanceof SocketTimeoutException) {
+            // 如果是响应失败，就说明用户提交是成功了的
             return new ApiException(ECPair.ERROR_NETWORK_SOCKET_TIMEOUT);
         } else if (e instanceof SocketException) {
             return new ApiException(ECPair.ERROR_NETWORK_SOCKET);
@@ -96,9 +95,11 @@ public class ApiException extends RuntimeException {
             return new ApiException(ECPair.ERROR_NETWORK_UNKNOWN_HOST);
         } else if (e instanceof MalformedURLException) {
             return new ApiException(ECPair.ERROR_URL);
+        } else if (e instanceof ApiException) {
+            //服务器返回的业务错误，如 token 失效
+            return sHandleException.handle(e);
         } else {
             String desc = e == null ? ECPair.ERROR_UNKNOWN.getDesc() : e.toString();
-            LogUtil.e(desc);
             return new ApiException(new ECPair.ECPairImpl(ECPair.ERROR_UNKNOWN.getCode(), desc));
         }
     }
@@ -108,5 +109,20 @@ public class ApiException extends RuntimeException {
         return "ApiException{" +
                 "mECPair=" + mECPair +
                 '}';
+    }
+
+    /**
+     * 自定义处理异常
+     */
+    public interface HandleException {
+
+        ApiException handle(Throwable e);
+
+        HandleException DEFAULT = new HandleException() {
+            @Override
+            public ApiException handle(Throwable e) {
+                return new ApiException(e);
+            }
+        };
     }
 }

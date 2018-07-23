@@ -1,7 +1,7 @@
 package com.major.http.api.interceptor;
 
 import com.major.base.log.LogUtil;
-import com.major.base.util.RegexUtils;
+import com.major.extra.util.REUtil;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -161,7 +161,7 @@ public abstract class SignInterceptor implements Interceptor {
                     if (splitKey.length == 2) {
                         String key = splitKey[1].replace("\"", "").replace("\r", "");
                         LogUtil.i("GetParms body concrectkey " + key + "--value--" + split1[split1.length - 1]);
-                        if (!RegexUtils.isSpecialChar(key) && !key.equals("file")) {
+                        if (!REUtil.isSpecialChar(key) && !key.equals("file")) {
                             map.put(key, split1[split1.length - 1].replace("\r", "").replace("\"", ""));
                         }
                     }

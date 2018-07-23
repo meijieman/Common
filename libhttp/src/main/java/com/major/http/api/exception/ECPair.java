@@ -19,8 +19,8 @@ public interface ECPair {
 
     ECPair RES_OK_0 = new ECPairImpl(0, "服务器响应正常"); // 服务调用正常，有结果返回（兼容以前 api）
     ECPair RES_OK = new ECPairImpl(200, "服务器响应正常"); // 服务调用正常，有结果返回
-    ECPair TOKEN_INVALID = new ECPairImpl(4019, "token 失效");
-    ECPair PAY_SUCCESS = new ECPairImpl(2017188, "资源支付成功"); //  资源支付成功
+//    ECPair TOKEN_INVALID = new ECPairImpl(4019, "token 失效");
+//    ECPair PAY_SUCCESS = new ECPairImpl(2017188, "资源支付成功"); //  资源支付成功
 
     // http 异常
     ECPair HTTP_UNAUTHORIZED = new ECPairImpl(401, ECPairImpl.MSG_SERVER_ERROR);
@@ -36,7 +36,7 @@ public interface ECPair {
 
     // 网络错误 1010 - 1030
     ECPair ERROR_NETWORK_CONNECT = new ECPairImpl(1010, ECPairImpl.MSG_NET_ERROR); // 请求链接超时
-    ECPair ERROR_NETWORK_SOCKET_TIMEOUT = new ECPairImpl(1011, ECPairImpl.MSG_NET_ERROR); // 服务结果返回超时
+    ECPair ERROR_NETWORK_SOCKET_TIMEOUT = new ECPairImpl(1011, ECPairImpl.MSG_SERVER_ERROR_1); // 服务结果返回超时
     ECPair ERROR_NETWORK_SOCKET = new ECPairImpl(1012, ECPairImpl.MSG_NET_ERROR);
     ECPair ERROR_NETWORK_UNKNOWN_HOST = new ECPairImpl(1013, ECPairImpl.MSG_NET_ERROR);
 
@@ -57,8 +57,9 @@ public interface ECPair {
 
     class ECPairImpl implements ECPair {
 
-        private static String MSG_NET_ERROR = "网络异常，请检查网络后点击重试。";
+        private static String MSG_NET_ERROR = "网络异常，请检查网络后重试。";
         private static String MSG_SERVER_ERROR = "服务器异常，请稍后重试。";
+        private static String MSG_SERVER_ERROR_1 = "服务器响应超时，请稍后重试。";
 
         // 响应码
         private int code;
