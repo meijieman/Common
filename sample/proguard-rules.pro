@@ -85,9 +85,9 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
-# common library
--dontwarn com.hongfans.common.**
--keep class com.hongfans.common.** {*;}
+# base library
+-dontwarn com.major.base.**
+-keep class com.major.base.** {*;}
 
 #retrofit2
 -dontwarn retrofit2.**
@@ -96,6 +96,8 @@
 #避免混淆泛型 如果混淆报错建议关掉
 -keepattributes Signature
 -keepattributes Exceptions
+
+-ignorewarnings
 
 
 
