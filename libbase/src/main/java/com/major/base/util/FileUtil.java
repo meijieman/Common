@@ -422,26 +422,23 @@ public class FileUtil {
 
     /**
      * @param msg      写入的消息
-     * @param parent   父目录
-     * @param filename 文件名
+     * @param path     路径
      * @param isAppend 是否是追加
      * @return 是否保存成功
      */
-    public static boolean saveFile(String msg, String parent, String filename, boolean isAppend) {
-        if (TextUtils.isEmpty(msg)) {
+    public static boolean saveFile(String msg, String path, boolean isAppend){
+        if(TextUtils.isEmpty(msg)){
             return false;
         }
-        File dir = new File(parent);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
+        File file = new File(path);
+        createDirIfNotExist(file.getParent());
 
-        try {
-            FileWriter fw = new FileWriter(dir + File.separator + filename, isAppend);
+        try{
+            FileWriter fw = new FileWriter(path, isAppend);
             PrintWriter pw = new PrintWriter(fw, true);
             pw.println(msg);
             return true;
-        } catch (IOException e) {
+        }catch(IOException e){
             Log.e("FileUtil", "saveFile: 发生异常");
             e.printStackTrace();
             return false;

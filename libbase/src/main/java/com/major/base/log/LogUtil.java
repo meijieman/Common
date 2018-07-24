@@ -2,12 +2,6 @@ package com.major.base.log;
 
 import android.util.Log;
 
-import com.major.base.rx.rxtask.RxTask;
-import com.major.base.util.FileUtil;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * TODO
  * Created by MEI on 2017/9/8.
@@ -15,20 +9,19 @@ import java.util.Date;
 
 public class LogUtil {
 
-    private static final int LEVEL_V = 1;
-    private static final int LEVEL_D = 2;
-    private static final int LEVEL_I = 3;
-    private static final int LEVEL_W = 4;
-    private static final int LEVEL_E = 5;
+    public static final int LEVEL_V = 1;
+    public static final int LEVEL_D = 2;
+    public static final int LEVEL_I = 3;
+    public static final int LEVEL_W = 4;
+    public static final int LEVEL_E = 5;
 
     private static String mTag = "LogUtil_";
 
     private static boolean mIsDebug;
     private static boolean mIsTrack;
     private static String mPkgName;
-    private static SimpleDateFormat sYyyyMMdd = new SimpleDateFormat("yyyyMMdd");
 
-    private LogUtil() {
+    LogUtil() {
     }
 
     public static void init(String pkgName, String tag, boolean isDebug, boolean isTrack) {
@@ -47,7 +40,6 @@ public class LogUtil {
     public static void v(String tag, Object msg) {
         log(mIsDebug, mIsTrack, tag, msg, LEVEL_V);
     }
-
 
     public static void d(Object msg) {
         log(mIsDebug, mIsTrack, "", msg, LEVEL_D);
@@ -96,43 +88,7 @@ public class LogUtil {
         log(true, mIsTrack, tag, msg, LEVEL_I);
     }
 
-    public static void saveLogAlways(final String parent, final Object msg) {
-        final String log = log(true, mIsTrack, "", msg, LEVEL_I);
-        RxTask.doOnIOThread(new RxTask.IOTask() {
-            @Override
-            public void onIOThread() {
-                String yyyyMMdd = sYyyyMMdd.format(new Date()) + ".log";
-                FileUtil.saveFile(log, parent, yyyyMMdd, true);
-            }
-        });
-    }
-
-    public static void saveLog(final String parent, final Object msg) {
-        final String log = log(mIsDebug, mIsTrack, "", msg, LEVEL_I);
-        RxTask.doOnIOThread(new RxTask.IOTask() {
-            @Override
-            public void onIOThread() {
-                String yyyyMMdd = sYyyyMMdd.format(new Date()) + ".log";
-                FileUtil.saveFile(log, parent, yyyyMMdd, true);
-            }
-        });
-    }
-
-    /**
-     * 保存 log 到本地
-     */
-    public static void saveLog(final String parent, final String tag, final Object msg) {
-        final String log = log(mIsDebug, mIsTrack, tag, msg, LEVEL_I);
-        RxTask.doOnIOThread(new RxTask.IOTask() {
-            @Override
-            public void onIOThread() {
-                String yyyyMMdd = sYyyyMMdd.format(new Date()) + ".log";
-                FileUtil.saveFile(log, parent, yyyyMMdd, true);
-            }
-        });
-    }
-
-    private static String log(boolean isDebug, boolean isTrack, String tag, Object msg, int level) {
+    static String log(boolean isDebug, boolean isTrack, String tag, Object msg, int level) {
         if (isDebug) {
             StringBuilder sb = new StringBuilder();
             StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
