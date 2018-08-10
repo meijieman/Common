@@ -105,7 +105,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
             @Override
             public void log(String message) {
                 // 关闭日志通过设置 Level 为 NONE
-                Platform.get().log(Platform.INFO, "tag_http " + message.replace("\n", "").replace(" ", ""), null);
+                Platform.get().log(Platform.INFO, "tag_http " + message, null);
             }
         };
     }

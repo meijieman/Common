@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.major.base.util.CloseUtil;
 import com.major.base.util.CommonUtil;
-import com.major.base.util.SDCardUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,7 +36,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     private static CrashHandler instance;
 
-    public static String sPath = "/mnt/sdcard/rearview/"; // 默认路径
+    public static String sDir = "/mnt/sdcard/rearview/"; // 默认路径
 
     private UncaughtExceptionHandler mDefaultHandler;
     private Context mContext;
@@ -57,11 +56,17 @@ public class CrashHandler implements UncaughtExceptionHandler {
         return instance;
     }
 
-    public void init(Context context, String path, boolean isDebug) {
+    /**
+     * 初始化日志
+     * @param context
+     * @param dir
+     * @param isDebug
+     */
+    public void init(Context context, String dir, boolean isDebug) {
         mContext = context;
         mIsDebug = isDebug;
-        if (CommonUtil.isNotEmpty(path)) {
-            sPath = path;
+        if (CommonUtil.isNotEmpty(dir)) {
+            sDir = dir;
         }
     }
 
@@ -86,10 +91,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
         //收集设备参数信息
         collectDeviceInfo(mContext);
         //write failed: ENOSPC (No space left on device)
-        long availableSize = SDCardUtil.getSDAvailableSize();
-        if (availableSize < 1024 * 1024) {
-            return false;
-        }
+//        long availableSize = SDCardUtil.getSDAvailableSize();
+//        if (availableSize < 1024 * 1024) {
+//            return false;
+//        }
         //保存日志文件
         saveCatchInfo2File(ex);
         return true;
@@ -138,9 +143,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
         PrintWriter printWriter = new PrintWriter(writer);
         if (ex == null) {
             ex = new Throwable("exception 为 null");
-        } else {
-            ex.printStackTrace(printWriter);
         }
+        ex.printStackTrace(printWriter);
         Throwable cause = ex.getCause();
         while (cause != null) {
             cause.printStackTrace(printWriter);
@@ -153,21 +157,21 @@ public class CrashHandler implements UncaughtExceptionHandler {
         try {
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + ".log";
-            File dir = new File(sPath);
+            File dir = new File(sDir);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            FileOutputStream fos = new FileOutputStream(sPath + fileName);
+            FileOutputStream fos = new FileOutputStream(sDir + File.separator + fileName);
             fos.write(sb.toString().getBytes());
 
-            sendCrashLog2PM(sPath + fileName);
+            sendCrashLog2PM(sDir + File.separator + fileName);
             fos.close();
 
             return fileName;
         } catch (Exception e) {
             Log.e(TAG, "an error occured while writing file...", e);
         } finally {
-            if (false) {
+            if (mIsDebug) {
                 Intent intent = new Intent(mContext, DefaultErrorActivity.class);
                 intent.putExtra(EXTRA_STACK_TRACE, sb.toString());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -194,7 +198,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 if (s == null) {
                     break;
                 }
-                Log.i("info", s);
+                Log.e("info", s);
             }
         } catch (IOException e) {
             e.printStackTrace();
