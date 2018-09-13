@@ -36,6 +36,7 @@ public class EncryptUtil {
             return null;
         }
     }
+
     /**
      * 用于获取一个String的md5值
      */

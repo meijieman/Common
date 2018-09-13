@@ -2,10 +2,12 @@ package com.major.http.api.rx;
 
 import com.major.http.api.exception.ApiException;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @desc: TODO
@@ -14,22 +16,22 @@ import rx.schedulers.Schedulers;
  */
 public class RxSchedulers {
 
-    private static Checker sChecker = new Checker(){
+    private static Checker sChecker = new Checker() {
         @Override
-        public boolean isSuccess(int code){
+        public boolean isSuccess(int code) {
             return true;
         }
     };
 
-    public static void setChecker(Checker checker){
+    public static void setChecker(Checker checker) {
         sChecker = checker;
     }
 
-    public static <T> Observable.Transformer<RxResp<T>, T> combine(){
-        return new Observable.Transformer<RxResp<T>, T>(){
+    public static <T> ObservableTransformer<RxResp<T>, T> combine() {
+        return new ObservableTransformer<RxResp<T>, T>() {
             @Override
-            public Observable<T> call(Observable<RxResp<T>> responseObservable){
-                return responseObservable
+            public ObservableSource<T> apply(Observable<RxResp<T>> upstream) {
+                return upstream
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -39,11 +41,11 @@ public class RxSchedulers {
         };
     }
 
-    public static <T> Observable.Transformer<RxResp<T>, RxResp<T>> combine2(){
-        return new Observable.Transformer<RxResp<T>, RxResp<T>>(){
+    public static <T> ObservableTransformer<RxResp<T>, RxResp<T>> combine2() {
+        return new ObservableTransformer<RxResp<T>, RxResp<T>>() {
             @Override
-            public Observable<RxResp<T>> call(Observable<RxResp<T>> observable){
-                return observable
+            public Observable<RxResp<T>> apply(Observable<RxResp<T>> upstream) {
+                return upstream
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -53,11 +55,11 @@ public class RxSchedulers {
         };
     }
 
-    public static <T> Observable.Transformer<T, T> switchThird(){
-        return new Observable.Transformer<T, T>(){
+    public static <T> ObservableTransformer<T, T> switchThird() {
+        return new ObservableTransformer<T, T>() {
             @Override
-            public Observable<T> call(Observable<T> tObservable){
-                return tObservable
+            public Observable<T> apply(Observable<T> upstream) {
+                return upstream
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -66,10 +68,10 @@ public class RxSchedulers {
         };
     }
 
-    static class RxErr<R> implements Func1<Throwable, Observable<R>>{
+    static class RxErr<R> implements Function<Throwable, Observable<R>> {
 
         @Override
-        public Observable<R> call(Throwable throwable) {
+        public Observable<R> apply(Throwable throwable) throws Exception {
             return Observable.error(ApiException.handleException(throwable));
         }
     }

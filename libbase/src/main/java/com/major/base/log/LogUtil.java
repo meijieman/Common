@@ -24,6 +24,11 @@ public class LogUtil {
     LogUtil() {
     }
 
+    public static void init(boolean isDebug) {
+        // isTrack 为 false 时可以将 pkgName 设置为 null
+        init(null, null, isDebug, false);
+    }
+
     public static void init(String pkgName, String tag, boolean isDebug, boolean isTrack) {
         if (tag != null && tag.trim().length() != 0) {
             mTag = tag;

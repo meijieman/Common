@@ -107,8 +107,7 @@ public class StringUtil {
      * @return boolean
      */
     public static boolean isinputEmpty(String input) {
-        if (input == null || "".equals(input))
-            return true;
+        if (input == null || "".equals(input)) { return true; }
 
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);

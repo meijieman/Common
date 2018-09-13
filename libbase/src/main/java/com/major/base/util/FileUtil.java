@@ -33,6 +33,7 @@ public class FileUtil {
 
     /**
      * 创建目录
+     *
      * @param dir
      */
     public static void createDirIfNotExist(String dir) {
@@ -238,8 +239,9 @@ public class FileUtil {
 
     /**
      * 复制文件
-     * @param src 源文件
-     * @param des 目标文件
+     *
+     * @param src    源文件
+     * @param des    目标文件
      * @param delete
      * @return
      */
@@ -304,14 +306,14 @@ public class FileUtil {
     /**
      * 获取指定文件夹、文件大小
      */
-    public static long getFileSize(File file){
+    public static long getFileSize(File file) {
         long size = 0L;
         File[] list = file.listFiles();
-        if(list == null || list.length == 0){
+        if (list == null || list.length == 0) {
             return 0L;
         }
-        for(File fileList : list){
-            if(fileList.isDirectory()){
+        for (File fileList : list) {
+            if (fileList.isDirectory()) {
                 size = size + getFileSize(fileList);
             } else {
                 size = size + fileList.length();
@@ -323,13 +325,14 @@ public class FileUtil {
 
     /**
      * 获取文件后缀
+     *
      * @param filePath
      * @return
      */
-    public static String getFileSuffix(String filePath){
-        if(CommonUtil.isNotEmpty(filePath)){
+    public static String getFileSuffix(String filePath) {
+        if (CommonUtil.isNotEmpty(filePath)) {
             int start = filePath.lastIndexOf(".");
-            if(start != -1){
+            if (start != -1) {
                 return filePath.substring(start + 1);
             }
         }
@@ -401,7 +404,7 @@ public class FileUtil {
      * 删除文件
      */
     public static boolean deleteFile(File file) {
-        if(file == null){
+        if (file == null) {
             return false;
         }
         if (file.exists()) {
@@ -426,19 +429,19 @@ public class FileUtil {
      * @param isAppend 是否是追加
      * @return 是否保存成功
      */
-    public static boolean saveFile(String msg, String path, boolean isAppend){
-        if(TextUtils.isEmpty(msg)){
+    public static boolean saveFile(String msg, String path, boolean isAppend) {
+        if (TextUtils.isEmpty(msg)) {
             return false;
         }
         File file = new File(path);
         createDirIfNotExist(file.getParent());
 
-        try{
+        try {
             FileWriter fw = new FileWriter(path, isAppend);
             PrintWriter pw = new PrintWriter(fw, true);
             pw.println(msg);
             return true;
-        }catch(IOException e){
+        } catch (IOException e) {
             Log.e("FileUtil", "saveFile: 发生异常");
             e.printStackTrace();
             return false;

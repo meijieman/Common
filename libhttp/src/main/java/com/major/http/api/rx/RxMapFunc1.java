@@ -3,25 +3,25 @@ package com.major.http.api.rx;
 import com.major.base.log.LogUtil;
 import com.major.http.api.exception.ApiException;
 
-import rx.functions.Func1;
+import io.reactivex.functions.Function;
 
 /**
  * TODO
  * Created by MEI on 2017/4/19.
  */
-final class RxMapFunc1<F> implements Func1<RxResp<F>, F> {
+final class RxMapFunc1<F> implements Function<RxResp<F>, F> {
 
     private Checker mChecker;
 
     public RxMapFunc1(Checker checker) {
-        if(checker == null){
+        if (checker == null) {
             throw new NullPointerException("checker 不能为 null");
         }
         mChecker = checker;
     }
 
     @Override
-    public F call(RxResp<F> f) {
+    public F apply(RxResp<F> f) throws Exception {
         LogUtil.i(ApiException.TAG_API_EXCEPTION, "RxMapFunc1 " + f);
         int code = f.getCode();
         if (mChecker.isSuccess(code)) {

@@ -14,14 +14,18 @@ public class CommonConfig {
 
     private static Application sInstance;
 
-    public static Application getContext() {
-        return sInstance;
-    }
-
     private CommonConfig(Application app, String tag, boolean isDebug, boolean isTrack) {
         sInstance = app;
         LogUtil.init(app.getPackageName(), tag, isDebug, isTrack);
         ToastUtil.init(app.getApplicationContext());
+    }
+
+    public static Application getContext() {
+        return sInstance;
+    }
+
+    public void destroy() {
+        sInstance = null;
     }
 
     public static class Build {
@@ -45,9 +49,5 @@ public class CommonConfig {
         public CommonConfig build() {
             return new CommonConfig(mApplication, mTag, mIsDebug, mIsTrack);
         }
-    }
-
-    public void destroy() {
-        sInstance = null;
     }
 }

@@ -9,33 +9,33 @@ import android.widget.Toast;
  * Created by MEI on 2017/6/8.
  */
 
-public final class ToastUtil{
+public final class ToastUtil {
 
     private static Toast sToast;
     private static Context sContext;
 
-    public static void init(Context ctx){
-        if(ctx == null){
+    public static void init(Context ctx) {
+        if (ctx == null) {
             return;
         }
         sContext = ctx.getApplicationContext();
     }
 
-    public static void showShort(String msg){
+    public static void showShort(String msg) {
         showToast(sContext, msg, Toast.LENGTH_SHORT);
     }
 
-    private static void showToast(Context ctx, String msg, int duration){
-        if(sContext == null){
+    private static void showToast(Context ctx, String msg, int duration) {
+        if (sContext == null) {
             throw new RuntimeException("invoke init() first, and param ctx cannot be null");
         }
-        if(msg == null){
+        if (msg == null) {
             return;
         }
-        if(sToast != null){
+        if (sToast != null) {
             sToast.cancel();
         }
-        if(Looper.myLooper() == Looper.getMainLooper()){
+        if (Looper.myLooper() == Looper.getMainLooper()) {
             // UI 线程
             sToast = Toast.makeText(ctx, "", duration);
             sToast.setText(msg);
@@ -50,7 +50,7 @@ public final class ToastUtil{
         }
     }
 
-    public static void showLong(String msg){
+    public static void showLong(String msg) {
         showToast(sContext, msg, Toast.LENGTH_SHORT);
     }
 }

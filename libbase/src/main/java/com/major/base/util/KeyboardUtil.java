@@ -11,15 +11,16 @@ import android.view.inputmethod.InputMethodManager;
  * 时间:2018/7/9 9:56
  * 说明: 隐藏，显示键盘
  */
-public class KeyboardUtil{
+public class KeyboardUtil {
 
     /**
      * 隐藏软键盘
+     *
      * @param context
      * @param view
      */
-    public static void hideKeyboard(Context context, View view){
-        if(view == null){
+    public static void hideKeyboard(Context context, View view) {
+        if (view == null) {
             return;
         }
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -28,11 +29,12 @@ public class KeyboardUtil{
 
     /**
      * 显示软键盘
+     *
      * @param context
-     * @param view 接受软键盘输入的视图
+     * @param view    接受软键盘输入的视图
      */
-    public static void showKeyboard(Context context, View view){
+    public static void showKeyboard(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view,InputMethodManager.SHOW_FORCED);
+        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
     }
 }

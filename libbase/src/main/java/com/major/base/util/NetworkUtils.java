@@ -26,17 +26,12 @@ import java.util.concurrent.Future;
  */
 public class NetworkUtils {
 
+    private static final int NETWORK_TYPE_GSM = 16;
+    private static final int NETWORK_TYPE_TD_SCDMA = 17;
+    private static final int NETWORK_TYPE_IWLAN = 18;
+
     private NetworkUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
-    }
-
-    public enum NetworkType {
-        NETWORK_WIFI,
-        NETWORK_4G,
-        NETWORK_3G,
-        NETWORK_2G,
-        NETWORK_UNKNOWN,
-        NETWORK_NO
     }
 
     /**
@@ -202,10 +197,6 @@ public class NetworkUtils {
         return tm != null ? tm.getNetworkOperatorName() : null;
     }
 
-    private static final int NETWORK_TYPE_GSM = 16;
-    private static final int NETWORK_TYPE_TD_SCDMA = 17;
-    private static final int NETWORK_TYPE_IWLAN = 18;
-
     /**
      * 获取当前网络类型
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>}</p>
@@ -284,17 +275,19 @@ public class NetworkUtils {
      */
     public static String getIPAddress(boolean useIPv4) {
         try {
-            for (Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces(); nis.hasMoreElements(); ) {
+            for (Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
+                 nis.hasMoreElements(); ) {
                 NetworkInterface ni = nis.nextElement();
                 // 防止小米手机返回10.0.2.15
-                if (!ni.isUp()) continue;
-                for (Enumeration<InetAddress> addresses = ni.getInetAddresses(); addresses.hasMoreElements(); ) {
+                if (!ni.isUp()) { continue; }
+                for (Enumeration<InetAddress> addresses = ni.getInetAddresses();
+                     addresses.hasMoreElements(); ) {
                     InetAddress inetAddress = addresses.nextElement();
                     if (!inetAddress.isLoopbackAddress()) {
                         String hostAddress = inetAddress.getHostAddress();
                         boolean isIPv4 = hostAddress.indexOf(':') < 0;
                         if (useIPv4) {
-                            if (isIPv4) return hostAddress;
+                            if (isIPv4) { return hostAddress; }
                         } else {
                             if (!isIPv4) {
                                 int index = hostAddress.indexOf('%');
@@ -338,5 +331,14 @@ public class NetworkUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public enum NetworkType {
+        NETWORK_WIFI,
+        NETWORK_4G,
+        NETWORK_3G,
+        NETWORK_2G,
+        NETWORK_UNKNOWN,
+        NETWORK_NO
     }
 }

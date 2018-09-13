@@ -31,7 +31,7 @@ import java.util.Stack;
  * <p/>
  * The {@link #format()} method iterates over the tokens, replacing and coloring the text as it iterates. The
  * doubly-linked list allows each token to ask its predecessor for the expanded length.
- *
+ * <p>
  * 使用方法：ColorPhrase.from(content).withSeparator("{}").innerColor(innerColor).outerColor(outColor).format();
  */
 public class ColorPhrase {
@@ -169,8 +169,7 @@ public class ColorPhrase {
         Token next;
         while ((next = token(prev)) != null) {
             // Creates a doubly-linked list of tokens starting with head.
-            if (head == null)
-                head = next;
+            if (head == null) { head = next; }
             prev = next;
         }
     }
@@ -336,8 +335,7 @@ public class ColorPhrase {
 
         protected Token(Token prev) {
             this.prev = prev;
-            if (prev != null)
-                prev.next = this;
+            if (prev != null) { prev.next = this; }
         }
 
         /**

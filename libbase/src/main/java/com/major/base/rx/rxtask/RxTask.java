@@ -4,12 +4,11 @@ import android.util.SparseArray;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * RxJava 线程切换替代 Thread 和 Handler
@@ -20,110 +19,59 @@ import rx.schedulers.Schedulers;
 
 public class RxTask {
 
-    private static SparseArray<Subscription> mArray = new SparseArray<>();
+    private static SparseArray<Disposable> mArray = new SparseArray<>();
 
 
-    public static void doOnIOThread(IOTask task) {
-        Observable.just(task)
-                .observeOn(Schedulers.io())
-                .subscribe(new Action1<IOTask>() {
-                    @Override
-                    public void call(IOTask ioTask) {ioTask.onIOThread();}
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });
+    public static Disposable doOnIOThread(IOTask task) {
+        return doOnIOThreadDelay(task, 0, TimeUnit.MILLISECONDS);
     }
 
-    public static void doOnIOThreadDelay(IOTask task, long delay, TimeUnit unit) {
-        Observable.just(task)
-                .observeOn(Schedulers.io())
-                .delay(delay, unit)
-                .subscribe(new Action1<IOTask>() {
-                    @Override
-                    public void call(IOTask ioTask) {ioTask.onIOThread();}
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });
-    }
-
-    public static Subscription RdoOnIOThread(IOTask task) {
+    public static Disposable doOnIOThreadDelay(IOTask task, long delay, TimeUnit unit) {
         return Observable.just(task)
                 .observeOn(Schedulers.io())
-                .subscribe(new Action1<IOTask>() {
-                    @Override
-                    public void call(IOTask ioTask) {ioTask.onIOThread();}
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });
+                .delay(delay, unit)
+                .subscribe(ioTask -> ioTask.onIOThread(),
+                        throwable -> throwable.printStackTrace());
     }
 
-    public static void doOnUIThread(UITask task) {
-        doOnUIThreadDelay(task, -1, 0, TimeUnit.MILLISECONDS);
+    public static Disposable doOnUIThread(UITask task) {
+        return doOnUIThreadDelay(task, -1, 0, TimeUnit.MILLISECONDS);
     }
 
-    public static void doOnUIThreadDelay(UITask task, long delay, TimeUnit unit) {
-        doOnUIThreadDelay(task, -1, delay, unit);
+    public static Disposable doOnUIThreadDelay(UITask task, long delay, TimeUnit unit) {
+        return doOnUIThreadDelay(task, -1, delay, unit);
     }
 
-    public static void doOnUIThreadDelay(UITask task, int tag, long delay, TimeUnit unit) {
-        final Subscription subscribe = Observable.just(task)
+    public static Disposable doOnUIThreadDelay(UITask task, int tag, long delay, TimeUnit unit) {
+        final Disposable disposable;
+        disposable = Observable.just(task)
                 .delay(delay, unit)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<UITask>() {
-                    @Override
-                    public void call(UITask uiTask) {
-                        uiTask.onUIThread();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });
+                .subscribe(uiTask -> uiTask.onUIThread(),
+                        throwable -> throwable.printStackTrace());
         if (tag != -1) {
-            mArray.put(tag, subscribe);
+            mArray.put(tag, disposable);
         }
-
+        return disposable;
     }
 
-    public static <T> Subscription doTask(final Task<T> task) {
+    public static <T> Disposable doTask(final Task<T> task) {
         return Observable
-                .create(new Observable.OnSubscribe<T>() {
-                    @Override
-                    public void call(Subscriber<? super T> subscriber) {
-                        T t = task.onIOThread();
-                        subscriber.onNext(t);
-                        subscriber.onCompleted();
-                    }
+                .create((ObservableOnSubscribe<T>) emitter -> {
+                    T t = task.onIOThread();
+                    emitter.onNext(t);
+                    emitter.onComplete();
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<T>() {
-                    @Override
-                    public void call(T t) {
-                        task.onUIThread(t);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });
+                .subscribe(t -> task.onUIThread(t),
+                        throwable -> throwable.printStackTrace());
     }
 
     public static void cancel(int tag) {
-        Subscription subscription = mArray.get(tag);
-        if (subscription != null) {
-            subscription.unsubscribe();
+        Disposable disposable = mArray.get(tag);
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
             mArray.remove(tag);
         }
     }
@@ -131,9 +79,9 @@ public class RxTask {
     public static void cancelAll() {
         int size = mArray.size();
         for (int i = 0; i < size; i++) {
-            Subscription subscription = mArray.get(mArray.keyAt(i));
-            if (subscription != null) {
-                subscription.unsubscribe();
+            Disposable disposable = mArray.get(mArray.keyAt(i));
+            if (disposable != null && !disposable.isDisposed()) {
+                disposable.dispose();
             }
         }
         mArray.clear();

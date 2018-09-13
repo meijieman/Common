@@ -1,10 +1,12 @@
 package com.hongfans.sample.api;
 
+import com.hongfans.sample.Articles;
 import com.hongfans.sample.Categories;
 import com.major.http.api.rx.RxResp;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
-import rx.Observable;
+import retrofit2.http.Path;
 
 /**
  * 作者:meijie
@@ -17,5 +19,9 @@ public interface ApiService{
 
     @GET("categories")
     Observable<RxResp<Categories>> getCategories();
+
+
+    @GET("http://www.wanandroid.com/article/list/{index}/json")
+    Observable<RxResp<Articles>> getArticles(@Path("index") int index);
 
 }

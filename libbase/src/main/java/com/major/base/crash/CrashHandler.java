@@ -33,11 +33,9 @@ import java.util.Map;
 public class CrashHandler implements UncaughtExceptionHandler {
 
     public static final String TAG = "CrashHandler";
-
-    private static CrashHandler instance;
-
+    public static final String EXTRA_STACK_TRACE = "cat.ereza.customactivityoncrash.EXTRA_STACK_TRACE";
     public static String sDir = "/mnt/sdcard/rearview/"; // 默认路径
-
+    private static CrashHandler instance;
     private UncaughtExceptionHandler mDefaultHandler;
     private Context mContext;
     private Map<String, String> infos = new HashMap<>();
@@ -58,6 +56,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     /**
      * 初始化日志
+     *
      * @param context
      * @param dir
      * @param isDebug
@@ -127,8 +126,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }
         }
     }
-
-    public static final String EXTRA_STACK_TRACE = "cat.ereza.customactivityoncrash.EXTRA_STACK_TRACE";
 
     /**
      * 保存错误信息到文件中

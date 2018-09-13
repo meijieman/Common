@@ -9,7 +9,7 @@ import android.util.SparseArray;
  * 时间:2018/7/24 11:59
  * 说明: 错误码对照表
  */
-public class CheckList{
+public class CheckList {
 
     //对应HTTP的状态码
     public static final int UNAUTHORIZED = 401;
@@ -40,7 +40,7 @@ public class CheckList{
     private static SparseArray<String> mErrors = new SparseArray<>();
 
 
-    static{
+    static {
         // 正常
         mErrors.put(200, "服务器响应正常");
 
@@ -77,19 +77,19 @@ public class CheckList{
 
     }
 
-    public static void add(int code, String desc){
+    public static void add(int code, String desc) {
         mErrors.put(code, desc);
     }
 
-    public static boolean contain(int code){
+    public static boolean contain(int code) {
         return mErrors.get(code) != null;
     }
 
-    public static String get(int code){
+    public static String get(int code) {
         return mErrors.get(code, "未定义异常码 " + code);
     }
 
-    public static ApiException assemble(int code){
+    public static ApiException assemble(int code) {
         return new ApiException(code, mErrors.get(code, "the code " + code + " desc not found"));
     }
 }

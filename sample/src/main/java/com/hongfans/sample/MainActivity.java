@@ -8,13 +8,13 @@ import com.hongfans.sample.api.ApiFactory;
 import com.hongfans.sample.api.ApiService;
 import com.major.base.log.LogUtil;
 import com.major.base.util.ToastUtil;
+import com.major.http.api.rx.RxObserver;
 import com.major.http.api.rx.RxSchedulers;
-import com.major.http.api.rx.RxSubscriber;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -27,25 +27,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v){
-        switch(v.getId()){
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.btn_1:
 
                 method1();
-                        
+
                 break;
             case R.id.btn_2:
-                ApiFactory.getInstance().getService(ApiService.class).getCategories()
-                        .compose(RxSchedulers.<Categories>combine())
-                        .subscribe(new RxSubscriber<Categories>(){
+                ApiFactory.getInstance().getService(ApiService.class).getArticles(0)
+                        .compose(RxSchedulers.combine())
+                        .subscribe(new RxObserver<Articles>() {
                             @Override
-                            public void onNext(Categories categories){
-
+                            public void onNext(Articles articles) {
+                                ToastUtil.showLong(articles.toString());
                             }
 
                             @Override
-                            public void onError(String err, int code){
-
+                            public void onError(String err, int code) {
+                                ToastUtil.showShort(err);
                             }
                         });
 
@@ -56,11 +56,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void method1(){
+    private void method1() {
         method2();
     }
 
-    private void method2(){
+    private void method2() {
 
         LogUtil.v("hello");
         LogUtil.d("hello");

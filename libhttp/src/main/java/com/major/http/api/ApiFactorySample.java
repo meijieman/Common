@@ -2,15 +2,15 @@ package com.major.http.api;
 
 import android.os.Environment;
 
-import com.major.http.api.interceptor.HttpLoggingInterceptor;
 import com.major.base.log.LogUtil;
+import com.major.http.api.interceptor.HttpLoggingInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -23,14 +23,6 @@ public class ApiFactorySample {
     public static final String BASE_URL = "https://github.com";
 
     private final Retrofit mRetrofit;
-
-    private static class HOLDER {
-        private static final ApiFactorySample sInstance = new ApiFactorySample();
-    }
-
-    public static ApiFactorySample getInstance() {
-        return HOLDER.sInstance;
-    }
 
     private ApiFactorySample() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -57,11 +49,19 @@ public class ApiFactorySample {
                 .client(client)
 //                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
+    }
+
+    public static ApiFactorySample getInstance() {
+        return HOLDER.sInstance;
     }
 
     public <T> T getService(Class<T> clazz) {
         return mRetrofit.create(clazz);
+    }
+
+    private static class HOLDER {
+        private static final ApiFactorySample sInstance = new ApiFactorySample();
     }
 }

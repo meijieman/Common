@@ -40,10 +40,9 @@ public class MCrypt {
         int len = data.length;
         String str = "";
         for (int i = 0; i < len; i++) {
-            if ((data[i] & 0xFF) < 16)
+            if ((data[i] & 0xFF) < 16) {
                 str = str + "0" + Integer.toHexString(data[i] & 0xFF);
-            else
-                str = str + Integer.toHexString(data[i] & 0xFF);
+            } else { str = str + Integer.toHexString(data[i] & 0xFF); }
         }
         return str;
     }
@@ -91,8 +90,7 @@ public class MCrypt {
     }
 
     public byte[] decrypt(String code) throws Exception {
-        if (code == null || code.length() == 0)
-            throw new Exception("Empty string");
+        if (code == null || code.length() == 0) { throw new Exception("Empty string"); }
 
         byte[] decrypted = null;
 

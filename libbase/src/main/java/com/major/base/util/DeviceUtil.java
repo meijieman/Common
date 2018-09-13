@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-public class DeviceUtil{
+public class DeviceUtil {
 
     private static final String TAG = "DeviceUtils";
 
@@ -34,13 +34,13 @@ public class DeviceUtil{
      * @param context
      * @return
      */
-    public static String getDeviceId(Context context){
-        final TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+    public static String getDeviceId(Context context) {
+        final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         final String tmDevice, tmSerial, androidId;
         tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
         androidId = "" + android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
 
         return deviceUuid.toString();
     }
@@ -51,8 +51,8 @@ public class DeviceUtil{
      * @param context
      * @return
      */
-    public static String getMacAddressInfo(Context context){
-        WifiManager manager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+    public static String getMacAddressInfo(Context context) {
+        WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = manager.getConnectionInfo();
         return info.getMacAddress();
     }
@@ -63,7 +63,7 @@ public class DeviceUtil{
      * @param context
      * @return
      */
-    public static String getDeviceID(Context context){
+    public static String getDeviceID(Context context) {
         return getTelphoneManager(context).getDeviceId();
     }
 
@@ -73,8 +73,8 @@ public class DeviceUtil{
      * @param context
      * @return
      */
-    private static TelephonyManager getTelphoneManager(Context context){
-        return (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+    private static TelephonyManager getTelphoneManager(Context context) {
+        return (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
     }
 
     /**
@@ -82,7 +82,7 @@ public class DeviceUtil{
      *
      * @return
      */
-    public static String getProductInfo(){
+    public static String getProductInfo() {
         return android.os.Build.MODEL;
     }
 
@@ -91,7 +91,7 @@ public class DeviceUtil{
      *
      * @return
      */
-    public static String getReleaseVersion(){
+    public static String getReleaseVersion() {
         return android.os.Build.VERSION.RELEASE;
     }
 
@@ -100,7 +100,7 @@ public class DeviceUtil{
      *
      * @return
      */
-    public static int getSDKVersion(){
+    public static int getSDKVersion() {
         return android.os.Build.VERSION.SDK_INT;
     }
 
@@ -110,7 +110,7 @@ public class DeviceUtil{
      * @param context
      * @return
      */
-    public static String getPhoneNum(Context context){
+    public static String getPhoneNum(Context context) {
         return getTelphoneManager(context).getLine1Number();
     }
 
@@ -120,16 +120,16 @@ public class DeviceUtil{
      * @param context
      * @return 返回0 表示失败 1表示为中国移动 2为中国联通 3为中国电信
      */
-    public static int getProviderName(Context context){
+    public static int getProviderName(Context context) {
         String IMSI = getImis(context);
-        if(IMSI == null){
+        if (IMSI == null) {
             return ERROR;
         }
-        if(IMSI.startsWith("46000") || IMSI.startsWith("46002")){
+        if (IMSI.startsWith("46000") || IMSI.startsWith("46002")) {
             return CHINA_MOBILE;
-        } else if(IMSI.startsWith("46001")){
+        } else if (IMSI.startsWith("46001")) {
             return UNICOM;
-        } else if(IMSI.startsWith("46003")){
+        } else if (IMSI.startsWith("46003")) {
             return TELECOMMUNICATIONS;
         }
         return ERROR;
@@ -141,7 +141,7 @@ public class DeviceUtil{
      * @param context
      * @return
      */
-    public static String getImis(Context context){
+    public static String getImis(Context context) {
         return getTelphoneManager(context).getSubscriberId();
     }
 
@@ -150,33 +150,33 @@ public class DeviceUtil{
      *
      * @return
      */
-    public static String getCpuName(){
+    public static String getCpuName() {
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
-        try{
+        try {
             // 读取文件CPU信息
             fileReader = new FileReader("/pro/cpuinfo");
             bufferedReader = new BufferedReader(fileReader);
             String string = bufferedReader.readLine();
             String[] strings = string.split(":\\s+", 2);
             return strings[1];
-        } catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
 
             Log.e(TAG, e.getLocalizedMessage());
-        } catch(IOException e){
+        } catch (IOException e) {
             Log.e(TAG, e.getLocalizedMessage());
         } finally {
-            if(bufferedReader != null){
-                try{
+            if (bufferedReader != null) {
+                try {
                     bufferedReader.close();
-                } catch(IOException e){
+                } catch (IOException e) {
                     Log.e(TAG, e.getLocalizedMessage());
                 }
             }
-            if(fileReader != null){
-                try{
+            if (fileReader != null) {
+                try {
                     fileReader.close();
-                } catch(IOException e){
+                } catch (IOException e) {
                     Log.e(TAG, e.getLocalizedMessage());
                 }
             }
@@ -191,12 +191,12 @@ public class DeviceUtil{
      * @param packageName
      * @return
      */
-    public static boolean isAppRunning(Context context, String packageName){
+    public static boolean isAppRunning(Context context, String packageName) {
         boolean isAppRunning = false;
-        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningTaskInfo> list = am.getRunningTasks(100);
-        for(RunningTaskInfo info : list){
-            if(info.topActivity.getPackageName().equals(packageName) && info.baseActivity.getPackageName().equals(packageName)){
+        for (RunningTaskInfo info : list) {
+            if (info.topActivity.getPackageName().equals(packageName) && info.baseActivity.getPackageName().equals(packageName)) {
                 isAppRunning = true;
                 // find it, break
                 break;
@@ -212,13 +212,13 @@ public class DeviceUtil{
      * @param packageName
      * @return
      */
-    public static boolean isTopActivity(Context context, String packageName){
-        ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+    public static boolean isTopActivity(Context context, String packageName) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(1);
-        if(tasksInfo.size() > 0){
+        if (tasksInfo.size() > 0) {
             System.out.println("---------------包名-----------" + tasksInfo.get(0).topActivity.getPackageName());
             // 应用程序位于堆栈的顶层
-            if(packageName.equals(tasksInfo.get(0).topActivity.getPackageName())){
+            if (packageName.equals(tasksInfo.get(0).topActivity.getPackageName())) {
                 return true;
             }
         }

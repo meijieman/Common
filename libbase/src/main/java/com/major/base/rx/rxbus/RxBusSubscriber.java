@@ -1,15 +1,16 @@
 package com.major.base.rx.rxbus;
 
-import rx.Subscriber;
-
 /**
  * TODO
  * Created by MEI on 2017/7/14.
+ *
+ * @deprecated 升级 RxJava2 后不可用，使用
+ * {@link RxBusObserver}
  */
-public abstract class RxBusSubscriber<T> extends Subscriber<T> {
+public abstract class RxBusSubscriber<T> /*extends Subscriber<T>*/ {
 
-    @Override
-    public void onCompleted() {
+   /* @Override
+    public void onComplete() {
 
     }
 
@@ -28,5 +29,5 @@ public abstract class RxBusSubscriber<T> extends Subscriber<T> {
         }
     }
 
-    protected abstract void onEvent(T t);
+    protected abstract void onEvent(T t);*/
 }

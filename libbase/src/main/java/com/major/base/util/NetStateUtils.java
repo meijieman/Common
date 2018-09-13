@@ -14,27 +14,6 @@ import com.major.base.log.LogUtil;
  */
 @TargetApi(24)
 public class NetStateUtils {
-    private static final int NETWORK_TYPE_UNAVAILABLE = -1;
-    private static final int NETWORK_TYPE_WIFI = -101;
-    private static final int NETWORK_CLASS_WIFI = -101;
-    private static final int NETWORK_CLASS_UNAVAILABLE = -1;
-    /**
-     * 不清楚数据流量类型
-     */
-    private static final int NETWORK_CLASS_UNKNOWN = 0;
-    /**
-     * 数据流量类型为2G
-     */
-    private static final int NETWORK_CLASS_2_G = 1;
-    /**
-     * 数据流量类型为3G
-     */
-    private static final int NETWORK_CLASS_3_G = 2;
-    /**
-     * 数据流量类型为4G .
-     */
-    private static final int NETWORK_CLASS_4_G = 3;
-    // 适配低版本手机
     /**
      * Network type is unknown
      */
@@ -67,6 +46,7 @@ public class NetStateUtils {
      * Current network is 1xRTT
      */
     public static final int NETWORK_TYPE_1xRTT = 7;
+    // 适配低版本手机
     /**
      * Current network is HSDPA
      */
@@ -99,6 +79,26 @@ public class NetStateUtils {
      * Current network is HSPA+
      */
     public static final int NETWORK_TYPE_HSPAP = 15;
+    private static final int NETWORK_TYPE_UNAVAILABLE = -1;
+    private static final int NETWORK_TYPE_WIFI = -101;
+    private static final int NETWORK_CLASS_WIFI = -101;
+    private static final int NETWORK_CLASS_UNAVAILABLE = -1;
+    /**
+     * 不清楚数据流量类型
+     */
+    private static final int NETWORK_CLASS_UNKNOWN = 0;
+    /**
+     * 数据流量类型为2G
+     */
+    private static final int NETWORK_CLASS_2_G = 1;
+    /**
+     * 数据流量类型为3G
+     */
+    private static final int NETWORK_CLASS_3_G = 2;
+    /**
+     * 数据流量类型为4G .
+     */
+    private static final int NETWORK_CLASS_4_G = 3;
     //是否打开了移动数据流量
     private static boolean mobileNetwork = false;
     //是否打开了无线
@@ -130,25 +130,6 @@ public class NetStateUtils {
         model = android.os.Build.MODEL;
         type = getNetworkInfo();
         return provider + type + model;
-    }
-
-    // 运营商
-    public String getProvider() {
-        return getProvider(context);
-    }
-
-    // 数据流量类型 --- 2G,3G,4G,wifi
-    public String getNetType() {
-        return getNetworkInfo();
-    }
-
-    // 手机品牌型号
-    public String getModel() {
-        return android.os.Build.MODEL;
-    }
-
-    public String getVersionName() {
-        return android.os.Build.VERSION.RELEASE;
     }
 
     /**
@@ -188,7 +169,7 @@ public class NetStateUtils {
         String type = "";
         // 获取网络连接情况
         ConnectivityManager mConnectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(mConnectivity != null){
+        if (mConnectivity != null) {
             NetworkInfo mobileNetworkInfo = mConnectivity.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
             NetworkInfo wifiNetworkInfo = mConnectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             if (mobileNetworkInfo != null && mobileNetworkInfo.isConnected()) {
@@ -294,5 +275,24 @@ public class NetStateUtils {
         }
         return getNetworkClassByType(networkType);
 
+    }
+
+    // 运营商
+    public String getProvider() {
+        return getProvider(context);
+    }
+
+    // 数据流量类型 --- 2G,3G,4G,wifi
+    public String getNetType() {
+        return getNetworkInfo();
+    }
+
+    // 手机品牌型号
+    public String getModel() {
+        return android.os.Build.MODEL;
+    }
+
+    public String getVersionName() {
+        return android.os.Build.VERSION.RELEASE;
     }
 }

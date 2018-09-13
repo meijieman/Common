@@ -8,17 +8,17 @@ import android.graphics.Canvas;
  * Created by MEI on 2017/6/9.
  */
 
-public class BitmapUtil{
+public class BitmapUtil {
 
     /**
      * 设置图片透明度
      */
-    public static Bitmap getTransparentBitmap(Bitmap sourceImg, int number){
+    public static Bitmap getTransparentBitmap(Bitmap sourceImg, int number) {
         int[] argb = new int[sourceImg.getWidth() * sourceImg.getHeight()];
         sourceImg.getPixels(argb, 0, sourceImg.getWidth(), 0, 0, sourceImg
                 .getWidth(), sourceImg.getHeight());// 获得图片的ARGB值
         number = number * 255 / 100;
-        for(int i = 0; i < argb.length; i++){
+        for (int i = 0; i < argb.length; i++) {
             argb[i] = (number << 24) | (argb[i] & 0x00FFFFFF);
         }
         sourceImg = Bitmap.createBitmap(argb, sourceImg.getWidth(), sourceImg
@@ -42,11 +42,11 @@ public class BitmapUtil{
      * @作者 tll
      * @时间 2016/12/5 19:22
      */
-    public static Bitmap fastblur(Bitmap sentBitmap, int radius){
+    public static Bitmap fastblur(Bitmap sentBitmap, int radius) {
 
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
 
-        if(radius < 1){
+        if (radius < 1) {
             return (null);
         }
 
@@ -71,7 +71,7 @@ public class BitmapUtil{
         divsum *= divsum;
         int temp = 256 * divsum;
         int dv[] = new int[temp];
-        for(i = 0; i < temp; i++){
+        for (i = 0; i < temp; i++) {
             dv[i] = (i / divsum);
         }
 
@@ -86,9 +86,9 @@ public class BitmapUtil{
         int routsum, goutsum, boutsum;
         int rinsum, ginsum, binsum;
 
-        for(y = 0; y < h; y++){
+        for (y = 0; y < h; y++) {
             rinsum = ginsum = binsum = routsum = goutsum = boutsum = rsum = gsum = bsum = 0;
-            for(i = -radius; i <= radius; i++){
+            for (i = -radius; i <= radius; i++) {
                 p = pix[yi + Math.min(wm, Math.max(i, 0))];
                 sir = stack[i + radius];
                 sir[0] = (p & 0xff0000) >> 16;
@@ -98,7 +98,7 @@ public class BitmapUtil{
                 rsum += sir[0] * rbs;
                 gsum += sir[1] * rbs;
                 bsum += sir[2] * rbs;
-                if(i > 0){
+                if (i > 0) {
                     rinsum += sir[0];
                     ginsum += sir[1];
                     binsum += sir[2];
@@ -110,7 +110,7 @@ public class BitmapUtil{
             }
             stackpointer = radius;
 
-            for(x = 0; x < w; x++){
+            for (x = 0; x < w; x++) {
 
                 r[yi] = dv[rsum];
                 g[yi] = dv[gsum];
@@ -127,7 +127,7 @@ public class BitmapUtil{
                 goutsum -= sir[1];
                 boutsum -= sir[2];
 
-                if(y == 0){
+                if (y == 0) {
                     vmin[x] = Math.min(x + radius + 1, wm);
                 }
                 p = pix[yw + vmin[x]];
@@ -159,10 +159,10 @@ public class BitmapUtil{
             }
             yw += w;
         }
-        for(x = 0; x < w; x++){
+        for (x = 0; x < w; x++) {
             rinsum = ginsum = binsum = routsum = goutsum = boutsum = rsum = gsum = bsum = 0;
             yp = -radius * w;
-            for(i = -radius; i <= radius; i++){
+            for (i = -radius; i <= radius; i++) {
                 yi = Math.max(0, yp) + x;
 
                 sir = stack[i + radius];
@@ -177,7 +177,7 @@ public class BitmapUtil{
                 gsum += g[yi] * rbs;
                 bsum += b[yi] * rbs;
 
-                if(i > 0){
+                if (i > 0) {
                     rinsum += sir[0];
                     ginsum += sir[1];
                     binsum += sir[2];
@@ -187,15 +187,15 @@ public class BitmapUtil{
                     boutsum += sir[2];
                 }
 
-                if(i < hm){
+                if (i < hm) {
                     yp += w;
                 }
             }
             yi = x;
             stackpointer = radius;
-            for(y = 0; y < h; y++){
+            for (y = 0; y < h; y++) {
                 pix[yi] = (0xff000000 & pix[yi]) | (dv[rsum] << 16)
-                          | (dv[gsum] << 8) | dv[bsum];
+                        | (dv[gsum] << 8) | dv[bsum];
 
                 rsum -= routsum;
                 gsum -= goutsum;
@@ -208,7 +208,7 @@ public class BitmapUtil{
                 goutsum -= sir[1];
                 boutsum -= sir[2];
 
-                if(x == 0){
+                if (x == 0) {
                     vmin[y] = Math.min(y + r1, hm) * w;
                 }
                 p = x + vmin[y];
